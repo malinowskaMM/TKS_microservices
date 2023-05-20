@@ -2,8 +2,8 @@ package p.lodz.tks.user.service.application.core.domain.model.dto.user;
 
 import lombok.Getter;
 
-import javax.json.bind.annotation.JsonbCreator;
-import javax.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbProperty;
 
 @Getter
 public class ManagerDto extends UserDto {

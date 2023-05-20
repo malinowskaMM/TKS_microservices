@@ -33,7 +33,7 @@ public class RoomResourceAdapterTest {
     private static final GenericContainer restService = new GenericContainer<>(
             new ImageFromDockerfile()
                     .withDockerfileFromBuilder(builder -> builder
-                            .from("payara/server-full:5.2022.5-jdk17")
+                            .from("payara/server-full:6.2023.4-jdk17")
                             .copy("TKS-2023-RentRestApi.war", "/opt/payara/deployments")
                             .build())
                     .withFileFromPath("TKS-2023-RentRestApi.war", Path.of("target", "TKS-2023-RentRestApi.war"))

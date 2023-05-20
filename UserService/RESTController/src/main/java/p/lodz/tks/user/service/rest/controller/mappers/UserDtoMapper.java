@@ -1,5 +1,6 @@
 package p.lodz.tks.user.service.rest.controller.mappers;
 
+import jakarta.ejb.Stateless;
 import lombok.NoArgsConstructor;
 import p.lodz.tks.user.service.application.core.domain.model.dto.user.*;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.AccessLevel;
@@ -9,6 +10,7 @@ import p.lodz.tks.user.service.application.core.domain.model.model.user.client.C
 import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
 
 @NoArgsConstructor
+@Stateless
 public class UserDtoMapper {
     public User toUser(UserDto userDto) {
         if(userDto instanceof AdminDto) {

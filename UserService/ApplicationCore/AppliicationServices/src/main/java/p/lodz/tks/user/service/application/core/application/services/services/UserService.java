@@ -17,12 +17,12 @@ import p.lodz.tks.user.service.application.ports.control.user.ModifyUserPort;
 import p.lodz.tks.user.service.application.ports.infrastructure.user.GetUserPort;
 import p.lodz.tks.user.service.user.UserUseCase;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
