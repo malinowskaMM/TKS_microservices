@@ -1,0 +1,45 @@
+package p.lodz.tks.rent.service.application.core.application.services.services.auth;
+
+
+import p.lodz.tks.rent.service.application.core.domain.model.model.user.User;
+import p.lodz.tks.rent.service.application.ports.infrastructure.user.GetUserPort;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
+import javax.security.enterprise.identitystore.CredentialValidationResult;
+import javax.security.enterprise.identitystore.IdentityStore;
+import java.util.*;
+
+@ApplicationScoped
+public class AuthIdentityStore implements IdentityStore {
+
+    @Inject
+    private GetUserPort getUserPort;
+
+    @Override
+    public int priority() {
+        return 70;
+    }
+
+    @Override
+    public Set<ValidationType> validationTypes() {
+        return EnumSet.of(ValidationType.VALIDATE, ValidationType.PROVIDE_GROUPS);
+    }
+
+    @Override
+    public Set<String> getCallerGroups(CredentialValidationResult validationResult) {
+        User user = new ArrayList<>(getUserPort.getUsers().stream().filter(user1 -> user1.getLogin().equals(
+                validationResult.getCallerPrincipal().getName())).toList()).get(0);
+        return new HashSet<>(Collections.singleton(user.getAccessLevel().toString()));
+    }
+
+    public CredentialValidationResult validate(UsernamePasswordCredential credential) {
+            User user = getUserPort.findUserByLogin(credential.getCaller() /*loogin*/,
+                    credential.getPasswordAsString() /*pass*/);
+            if (user != null && user.isActive()) {
+                return new CredentialValidationResult(user.getLogin(), /*role*/new HashSet<>(Collections.singleton(user.getAccessLevel().toString())));
+            }
+        return CredentialValidationResult.INVALID_RESULT;
+    }
+}

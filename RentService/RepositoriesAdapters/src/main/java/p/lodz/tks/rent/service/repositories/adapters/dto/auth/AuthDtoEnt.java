@@ -1,0 +1,27 @@
+package p.lodz.tks.rent.service.repositories.adapters.dto.auth;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+@Getter
+@Setter
+public class AuthDtoEnt {
+    @NotNull
+    @Size(min = 5)
+    String login;
+
+    @NotNull
+    @Size(min = 9)
+    String password;
+
+    public AuthDtoEnt(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
+    public AuthDtoEnt() {
+    }
+}
