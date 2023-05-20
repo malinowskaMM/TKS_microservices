@@ -3,6 +3,7 @@ package p.lodz.tks.rent.service.repositories.adapters.aggregates.rent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import p.lodz.tks.rent.service.application.core.domain.model.model.rent.Rent;
+
 import p.lodz.tks.rent.service.application.ports.control.rent.CreateRentPort;
 import p.lodz.tks.rent.service.application.ports.control.rent.DeleteRentPort;
 import p.lodz.tks.rent.service.application.ports.control.rent.EndRentPort;

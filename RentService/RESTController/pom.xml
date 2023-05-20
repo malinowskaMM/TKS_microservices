@@ -8,7 +8,8 @@
         <artifactId>RentService</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
+    <packaging>war</packaging>
+<!--    <groupId>p.lodz.tks.rent.service.rest.controller</groupId>-->
     <artifactId>RESTController</artifactId>
 
     <properties>
@@ -41,6 +42,34 @@
             <version>20220320</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>1.17.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.2.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.23.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <build>
+        <finalName>TKS-2023-RentRestApi</finalName>
+    </build>
 
 </project>

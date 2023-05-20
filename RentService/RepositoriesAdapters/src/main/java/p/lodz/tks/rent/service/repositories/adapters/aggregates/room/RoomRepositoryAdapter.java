@@ -10,8 +10,8 @@ import p.lodz.tks.rent.service.repositories.adapters.aggregates.room.converter.R
 import p.lodz.tks.rent.service.repositories.adapters.repositories.RoomRepository;
 import p.lodz.tks.rent.service.repositories.modelEnt.room.RoomEnt;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;

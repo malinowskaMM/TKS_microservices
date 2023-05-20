@@ -8,8 +8,7 @@
         <artifactId>UserService</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-
-    <groupId>p.lodz.tks.user.service.rest.controller</groupId>
+    <packaging>war</packaging>
     <artifactId>RESTController</artifactId>
 
     <properties>
@@ -44,9 +43,10 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>1.15.3</version>
-            <scope>test</scope>
+            <artifactId>testcontainers-bom</artifactId>
+            <version>1.18.1</version>
+            <type>pom</type>
+            <scope>import</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -55,5 +55,9 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>TKS-2023-UserRestApi</finalName>
+    </build>
 
 </project>

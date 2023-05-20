@@ -8,8 +8,8 @@ import p.lodz.tks.rent.service.application.core.domain.model.exceptions.RoomWith
 import p.lodz.tks.rent.service.application.core.domain.model.model.rent.Rent;
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.User;
 
-import javax.ejb.Stateless;
-import javax.inject.Inject;
+import jakarta.ejb.Stateless;
+import jakarta.inject.Inject;
 
 
 @NoArgsConstructor
