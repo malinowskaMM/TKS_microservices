@@ -3,7 +3,7 @@ package p.lodz.tks.rent.service.repositories.adapters.dto.rent;
 import lombok.Getter;
 import lombok.Setter;
 
-import jakarta.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter

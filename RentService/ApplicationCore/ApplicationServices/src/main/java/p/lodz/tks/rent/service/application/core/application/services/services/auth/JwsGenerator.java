@@ -3,7 +3,7 @@ package p.lodz.tks.rent.service.application.core.application.services.services.a
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
-import jakarta.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 import java.text.ParseException;
 
 @ApplicationScoped

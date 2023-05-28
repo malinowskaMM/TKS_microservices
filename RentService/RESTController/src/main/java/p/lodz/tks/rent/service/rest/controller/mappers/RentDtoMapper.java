@@ -2,14 +2,14 @@ package p.lodz.tks.rent.service.rest.controller.mappers;
 
 import lombok.NoArgsConstructor;
 import p.lodz.tks.rent.service.application.core.application.services.services.services.UserService;
-import p.lodz.tks.rent.service.application.core.domain.model.dto.rent.RentDto;
+import p.lodz.tks.rent.service.rest.controller.dto.rent.RentDto;
 import p.lodz.tks.rent.service.application.core.domain.model.exceptions.ClientWithGivenIdNotFound;
 import p.lodz.tks.rent.service.application.core.domain.model.exceptions.RoomWithGivenIdNotFound;
 import p.lodz.tks.rent.service.application.core.domain.model.model.rent.Rent;
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.User;
 
-import jakarta.ejb.Stateless;
-import jakarta.inject.Inject;
+import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 
 @NoArgsConstructor

@@ -4,7 +4,7 @@ package p.lodz.tks.rent.service.repositories.adapters.repositoriesImplementation
 import p.lodz.tks.rent.service.application.core.domain.model.exceptions.RoomNotAvailable;
 import p.lodz.tks.rent.service.repositories.modelEnt.rent.RentEnt;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

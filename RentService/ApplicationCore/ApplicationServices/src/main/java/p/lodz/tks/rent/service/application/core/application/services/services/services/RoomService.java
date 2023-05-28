@@ -13,11 +13,11 @@ import p.lodz.tks.rent.service.application.ports.infrastructure.rent.GetRentPort
 import p.lodz.tks.rent.service.application.ports.infrastructure.room.GetRoomPort;
 import p.lodz.tks.rent.service.room.RoomUseCase;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.ws.rs.NotFoundException;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.ws.rs.NotFoundException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;

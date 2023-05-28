@@ -40,21 +40,20 @@ public class UserResourceAdapterTest {
 
     String CONTAINER_URL;
 
-     @Container
-     private static final GenericContainer restService = new GenericContainer<>(
-             new ImageFromDockerfile()
-                     .withDockerfileFromBuilder(builder -> builder
-                             .from("payara/server-full:5.2022.5-jdk17")
-                             .copy("TKS-2023-RentRestApi.war", "/opt/payara/deployments")
-                             .build())
-                     .withFileFromPath("TKS-2023-RentRestApi.war", Path.of("target", "TKS-2023-RentRestApi.war"))
-     )
-             .withExposedPorts(8080, 4848)
-             .waitingFor(Wait.forHttp("/TKS-2023-RentRestApi/api/rooms/test").forPort(8080).forStatusCode(200))
-             .withLogConsumer(new Slf4jLogConsumer((org.slf4j.Logger) LOGGER));
+    @Container
+    private static final GenericContainer restService = new GenericContainer<>(
+            new ImageFromDockerfile()
+                    .withDockerfileFromBuilder(builder -> builder
+                            .from("payara/server-full:5.2022.5-jdk17")
+                            .copy("TKS-2023-RentRestApi.war", "/opt/payara/deployments")
+                            .build())
+                    .withFileFromPath("TKS-2023-RentRestApi.war", Path.of("target", "TKS-2023-RentRestApi.war"))
+    )
+            .withExposedPorts(8080, 4848)
+            .waitingFor(Wait.forHttp("/TKS-2023-RentRestApi/api/rooms/test").forPort(8080).forStatusCode(200));
 
 
-     @Before
+    @Before
     public void initialize() {
         restService.start();
         CONTAINER_URL = formatter.format("http://localhost:%d/TKS-2023-RentRestApi", restService.getMappedPort(8080)).toString();

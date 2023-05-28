@@ -3,10 +3,11 @@ package adapters;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.json.simple.JSONObject;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
@@ -114,14 +115,14 @@ public class RentResourceAdapterTest {
                 .extract().path("id");
 
     }
-
-    @AfterEach
-    public void clean() {
-        RestAssured.given().
-                header("Authorization", "Bearer " + token).
-                delete(CONTAINER_URL +"/api/rents" + exampleRentUUID)
-                .then().statusCode(200);
-    }
+    //
+    // @AfterEach
+    // public void clean() {
+    //     RestAssured.given().
+    //             header("Authorization", "Bearer " + token).
+    //             delete(CONTAINER_URL +"/api/rents" + exampleRentUUID)
+    //             .then().statusCode(200);
+    // }
 
     @Test
     public void testGetRent() {

@@ -1,6 +1,6 @@
 package p.lodz.tks.rent.service.application.core.domain.model.exceptions;
 
-import jakarta.validation.ValidationException;
+import javax.validation.ValidationException;
 
 public class ClientValidationFailed extends ValidationException {
     public ClientValidationFailed(String message) {

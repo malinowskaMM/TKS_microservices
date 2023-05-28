@@ -1,6 +1,6 @@
 package p.lodz.tks.rent.service.soap.controller.model.user;
 
-import jakarta.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbCreator;
 import lombok.Getter;
 import lombok.Setter;
 

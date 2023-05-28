@@ -13,11 +13,11 @@ import p.lodz.tks.rent.service.application.ports.control.rent.EndRentPort;
 import p.lodz.tks.rent.service.application.ports.infrastructure.rent.GetRentPort;
 import p.lodz.tks.rent.service.rent.RentUseCase;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.ws.rs.NotFoundException;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.ws.rs.NotFoundException;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
