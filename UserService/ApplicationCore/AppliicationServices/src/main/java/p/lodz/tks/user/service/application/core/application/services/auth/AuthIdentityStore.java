@@ -3,11 +3,11 @@ package p.lodz.tks.user.service.application.core.application.services.auth;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
 import p.lodz.tks.user.service.application.ports.infrastructure.user.GetUserPort;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.security.enterprise.credential.UsernamePasswordCredential;
-import jakarta.security.enterprise.identitystore.CredentialValidationResult;
-import jakarta.security.enterprise.identitystore.IdentityStore;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.security.enterprise.credential.UsernamePasswordCredential;
+import javax.security.enterprise.identitystore.CredentialValidationResult;
+import javax.security.enterprise.identitystore.IdentityStore;
 import java.util.*;
 
 @ApplicationScoped

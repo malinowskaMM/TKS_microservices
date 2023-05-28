@@ -4,13 +4,13 @@ package p.lodz.tks.user.service.rest.controller.adapters;
 import p.lodz.tks.user.service.repositories.adapters.repositories.UserRepository;
 import p.lodz.tks.user.service.repositories.modelEnt.user.AccessLevelEnt;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.security.DeclareRoles;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.ws.rs.ApplicationPath;
-import jakarta.ws.rs.core.Application;
+import javax.annotation.PostConstruct;
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.RolesAllowed;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
 
 @ApplicationPath("/api")
 @ApplicationScoped

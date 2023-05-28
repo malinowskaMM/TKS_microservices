@@ -3,27 +3,27 @@ package p.lodz.tks.user.service.rest.controller.adapters;
 import com.nimbusds.jose.JOSEException;
 import org.json.JSONObject;
 import p.lodz.tks.user.service.application.core.application.services.auth.JwsGenerator;
-import p.lodz.tks.user.service.application.core.domain.model.dto.auth.PasswordChangeDto;
-import p.lodz.tks.user.service.application.core.domain.model.dto.user.AdminDto;
-import p.lodz.tks.user.service.application.core.domain.model.dto.user.ClientDto;
-import p.lodz.tks.user.service.application.core.domain.model.dto.user.ManagerDto;
 import p.lodz.tks.user.service.application.core.domain.model.exceptions.*;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
+import p.lodz.tks.user.service.rest.controller.dto.auth.PasswordChangeDto;
+import p.lodz.tks.user.service.rest.controller.dto.user.AdminDto;
+import p.lodz.tks.user.service.rest.controller.dto.user.ClientDto;
+import p.lodz.tks.user.service.rest.controller.dto.user.ManagerDto;
 import p.lodz.tks.user.service.rest.controller.mappers.UserDtoMapper;
 import p.lodz.tks.user.service.user.UserUseCase;
 
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.inject.Inject;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.Context;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.text.ParseException;
 import java.util.UUID;
 
@@ -51,6 +51,13 @@ public class UserResourceAdapter {
             throw new PasswordMatchFailed("New password and new confrim password do not match");
         }
 
+    }
+
+    @GET
+    @Path("/ping")
+    @RolesAllowed({"ADMIN", "MANAGER", "CLIENT", "NONE"})
+    public Response ping() {
+        return Response.ok().build();
     }
 
     @POST

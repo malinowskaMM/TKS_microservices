@@ -7,7 +7,7 @@ import p.lodz.tks.user.service.repositories.modelEnt.user.admin.AdminEnt;
 import p.lodz.tks.user.service.repositories.modelEnt.user.client.ClientEnt;
 import p.lodz.tks.user.service.repositories.modelEnt.user.manager.ManagerEnt;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -12,8 +12,8 @@
         <module name="DomainModel (2) (p.lodz.tks.user.service.application.core.domain.model)" />
         <module name="RESTController (2) (p.lodz.tks.user.service)" />
         <module name="RepositoriesAdapters (1) (p.lodz.tks.rent.service)" />
-        <module name="ApplicationServices (2) (p.lodz.tks.user.service.application.core.application.services)" />
         <module name="UserInterface (1) (p.lodz.tks.rent.service)" />
+        <module name="ApplicationServices (2) (p.lodz.tks.user.service.application.core.application.services)" />
         <module name="RepositoriesAdapters (2) (p.lodz.tks.user.service.repositories.adapters)" />
         <module name="ApplicationPorts (1) (p.lodz.tks.rent.service)" />
         <module name="ApplicationServices (1) (p.lodz.tks.rent.service)" />
@@ -23,7 +23,6 @@
         <module name="UserInterface (2) (p.lodz.tks.user.service.user.interface)" />
         <module name="Repositories (2) (p.lodz.tks.user.service.repositories)" />
         <module name="SOAPController (1) (p.lodz.tks.rent.service)" />
-        <module name="RESTController" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

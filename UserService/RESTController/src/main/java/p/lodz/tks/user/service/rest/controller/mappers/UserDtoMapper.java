@@ -1,13 +1,13 @@
 package p.lodz.tks.user.service.rest.controller.mappers;
 
-import jakarta.ejb.Stateless;
+import javax.ejb.Stateless;
 import lombok.NoArgsConstructor;
-import p.lodz.tks.user.service.application.core.domain.model.dto.user.*;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.AccessLevel;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
+import p.lodz.tks.user.service.rest.controller.dto.user.*;
 
 @NoArgsConstructor
 @Stateless

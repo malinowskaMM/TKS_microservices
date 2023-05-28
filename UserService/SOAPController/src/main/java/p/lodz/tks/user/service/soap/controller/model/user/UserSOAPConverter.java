@@ -1,11 +1,11 @@
 package p.lodz.tks.user.service.soap.controller.model.user;
 
 import org.apache.commons.beanutils.BeanUtils;
-import p.lodz.tks.user.service.application.core.domain.model.dto.user.ShowUserDto;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
+import p.lodz.tks.user.service.dto.user.ShowUserDto;
 import p.lodz.tks.user.service.soap.controller.model.user.admin.AdminSOAP;
 import p.lodz.tks.user.service.soap.controller.model.user.client.ClientSOAP;
 import p.lodz.tks.user.service.soap.controller.model.user.manager.ManagerSOAP;

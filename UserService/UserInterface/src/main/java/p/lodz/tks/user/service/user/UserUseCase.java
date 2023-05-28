@@ -1,12 +1,12 @@
 package p.lodz.tks.user.service.user;
 
 import com.nimbusds.jose.JOSEException;
-import p.lodz.tks.user.service.application.core.domain.model.dto.user.ShowUserDto;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.AccessLevel;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
+import p.lodz.tks.user.service.dto.user.ShowUserDto;
 
 import java.text.ParseException;
 import java.util.List;

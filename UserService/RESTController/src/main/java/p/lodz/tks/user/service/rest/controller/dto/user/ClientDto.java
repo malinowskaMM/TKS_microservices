@@ -1,4 +1,4 @@
-package p.lodz.tks.user.service.application.core.domain.model.dto.user;
+package p.lodz.tks.user.service.rest.controller.dto.user;
 
 import lombok.Getter;
 

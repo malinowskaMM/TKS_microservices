@@ -1,4 +1,4 @@
-package p.lodz.tks.user.service.application.core.domain.model.dto.auth;
+package p.lodz.tks.user.service.rest.controller.dto.auth;
 
 import lombok.Getter;
 import lombok.Setter;
