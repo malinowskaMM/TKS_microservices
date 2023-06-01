@@ -14,6 +14,8 @@ import p.lodz.tks.user.service.rest.controller.dto.user.ClientDto;
 import p.lodz.tks.user.service.rest.controller.dto.user.ManagerDto;
 import p.lodz.tks.user.service.rest.controller.mappers.UserDtoMapper;
 import p.lodz.tks.user.service.user.UserUseCase;
+import p.lodz.tks.user.service.user.rabbitmq.adapter.event.ClientCreatedEvent;
+import p.lodz.tks.user.service.user.rabbitmq.adapter.messaging.ClientProducer;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
@@ -38,6 +40,9 @@ public class UserResourceAdapter {
 
     @Inject
     JwsGenerator jwsGenerator;
+
+    @Inject
+    private ClientProducer clientProducer;
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -66,6 +71,9 @@ public class UserResourceAdapter {
     public Response createClient(@Valid ClientDto clientDto) throws ClientValidationFailed {
         Client client = (Client) userDtoMapper.toUser(clientDto);
         client = userUseCase.registerClient(client.getFirstName(), client.getLastName(), client.getPersonalId(), client.getAddress(), client.getLogin(), client.getPassword());
+
+        clientProducer.produce(new ClientCreatedEvent(client));
+
         return Response.ok().entity(client).build();
     }
 
@@ -100,6 +108,9 @@ public class UserResourceAdapter {
         }
         Client client = (Client) userDtoMapper.toUser(clientDto);
         userUseCase.updateUser(id, jws, client.getFirstName(), client.getLastName(), client.getAddress(), client.getLogin(), client.getPassword(), client.getAccessLevel());
+
+        clientProducer.produce(new ClientCreatedEvent(client));
+
         return Response.ok().build();
     }
 

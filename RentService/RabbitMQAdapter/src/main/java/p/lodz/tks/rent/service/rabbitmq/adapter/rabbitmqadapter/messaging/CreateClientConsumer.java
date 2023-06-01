@@ -3,7 +3,6 @@ package p.lodz.tks.rent.service.rabbitmq.adapter.rabbitmqadapter.messaging;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Delivery;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
