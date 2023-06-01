@@ -20,14 +20,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.rabbitmq</groupId>
-            <artifactId>amqp-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-        <dependency>
             <groupId>p.lodz.tks.rent.service</groupId>
             <artifactId>DomainModel</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -36,6 +28,7 @@
         <dependency>
             <groupId>org.eclipse.microprofile</groupId>
             <artifactId>microprofile</artifactId>
+            <version>4.1</version>
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
