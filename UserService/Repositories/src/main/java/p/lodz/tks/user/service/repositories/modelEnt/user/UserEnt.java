@@ -6,7 +6,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.UUID;
 
-public abstract class UserEnt implements Serializable{
+public class UserEnt implements Serializable{
 
     @Getter
     private final UUID uuid;
@@ -24,7 +24,7 @@ public abstract class UserEnt implements Serializable{
     @Setter
     private AccessLevelEnt accessLevel;
 
-    protected UserEnt(boolean isActive, String login, String password, AccessLevelEnt accessLevel) {
+    public UserEnt(boolean isActive, String login, String password, AccessLevelEnt accessLevel) {
         this.uuid = UUID.randomUUID();
         this.isActive = isActive;
         this.login = login;
@@ -32,7 +32,7 @@ public abstract class UserEnt implements Serializable{
         this.accessLevel = accessLevel;
     }
 
-    protected UserEnt(UUID uuid, boolean isActive, String login, String password, AccessLevelEnt accessLevel) {
+    public UserEnt(UUID uuid, boolean isActive, String login, String password, AccessLevelEnt accessLevel) {
         this.uuid = uuid;
         this.isActive = isActive;
         this.login = login;

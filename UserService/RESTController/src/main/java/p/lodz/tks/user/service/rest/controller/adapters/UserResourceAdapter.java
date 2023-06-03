@@ -3,15 +3,13 @@ package p.lodz.tks.user.service.rest.controller.adapters;
 import com.nimbusds.jose.JOSEException;
 import org.json.JSONObject;
 import p.lodz.tks.user.service.application.core.application.services.auth.JwsGenerator;
-import p.lodz.tks.user.service.application.core.domain.model.exceptions.*;
+import p.lodz.tks.user.service.application.core.domain.model.exceptions.ManagerValidationFailed;
+import p.lodz.tks.user.service.application.core.domain.model.exceptions.PasswordMatchFailed;
+import p.lodz.tks.user.service.application.core.domain.model.exceptions.UserWithGivenIdNotFound;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
+import p.lodz.tks.user.service.message.queue.Publisher;
 import p.lodz.tks.user.service.rest.controller.dto.auth.PasswordChangeDto;
-import p.lodz.tks.user.service.rest.controller.dto.user.AdminDto;
-import p.lodz.tks.user.service.rest.controller.dto.user.ClientDto;
-import p.lodz.tks.user.service.rest.controller.dto.user.ManagerDto;
+import p.lodz.tks.user.service.rest.controller.dto.user.UserDto;
 import p.lodz.tks.user.service.rest.controller.mappers.UserDtoMapper;
 import p.lodz.tks.user.service.user.UserUseCase;
 
@@ -24,6 +22,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.UUID;
 
@@ -34,7 +33,7 @@ public class UserResourceAdapter {
     UserUseCase userUseCase;
 
     @Inject
-    UserDtoMapper userDtoMapper;
+    private Publisher publisher;
 
     @Inject
     JwsGenerator jwsGenerator;
@@ -48,9 +47,8 @@ public class UserResourceAdapter {
             userUseCase.changePassword(passwordChangeDto.getOldPassword(), passwordChangeDto.getNewPassword());
             return Response.ok().build();
         } else {
-            throw new PasswordMatchFailed("New password and new confrim password do not match");
+            throw new PasswordMatchFailed("New password and new confirm password do not match");
         }
-
     }
 
     @GET
@@ -60,79 +58,44 @@ public class UserResourceAdapter {
         return Response.ok().build();
     }
 
-    @POST
-    @Path("/client")
-    @RolesAllowed({"ADMIN", "MANAGER", "CLIENT", "NONE"})
-    public Response createClient(@Valid ClientDto clientDto) throws ClientValidationFailed {
-        Client client = (Client) userDtoMapper.toUser(clientDto);
-        client = userUseCase.registerClient(client.getFirstName(), client.getLastName(), client.getPersonalId(), client.getAddress(), client.getLogin(), client.getPassword());
-        return Response.ok().entity(client).build();
-    }
-
-    @POST
-    @Path("/admin")
-    @RolesAllowed({"ADMIN"})
-    public Response createAdmin(@Valid AdminDto adminDto) throws AdminValidationFailed {
-        Admin admin = (Admin) userDtoMapper.toUser(adminDto);
-        admin = userUseCase.registerAdmin(admin.getLogin(), admin.getPassword());
-        return Response.ok().entity(admin).build();
-    }
-
-    @POST
-    @Path("/manager")
-    @RolesAllowed({"ADMIN", "MANAGER"})
-    public Response createManager(@Valid ManagerDto managerDto) throws ManagerValidationFailed {
-        Manager manager = (Manager) userDtoMapper.toUser(managerDto);
-        manager = userUseCase.registerManager(manager.getLogin(), manager.getPassword());
-        return Response.ok().entity(manager).build();
-    }
-
     @PUT
-    @Path("/client/{uuid}")
+    @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
-    public Response updateClient(@PathParam("uuid") UUID id, @Valid ClientDto clientDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException {
-        String jws = request.getHeader("If-Match");
-        if (jws == null) {
-            return Response.status(400).build();
-        }
+    public Response updateUser(@PathParam("uuid") UUID id, @Valid UserDto userDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, IOException {
         if (userUseCase.getUserById(id) == null) {
             return Response.status(404).build();
         }
-        Client client = (Client) userDtoMapper.toUser(clientDto);
-        userUseCase.updateUser(id, jws, client.getFirstName(), client.getLastName(), client.getAddress(), client.getLogin(), client.getPassword(), client.getAccessLevel());
+
+        if (userDto.getAccessLevel().equals("CLIENT")) {
+            publisher.updateUser(Publisher.Serialization
+                    .clientToJsonString(UserDtoMapper.toUser(userDto),
+                            userDto.getPersonalId(),
+                            userDto.getFirstName(),
+                            userDto.getLastName(),
+                            userDto.getAddress()));
+        } else if (userDto.getAccessLevel().equals("ADMIN") || userDto.getAccessLevel().equals("MANAGER")) {
+            publisher.updateUser(Publisher.Serialization.userToJsonString(UserDtoMapper.toUser(userDto)));
+        }
+
         return Response.ok().build();
     }
 
-    @PUT
-    @Path("/admin/{uuid}")
-    @RolesAllowed({"ADMIN"})
-    public Response updateAdmin(@PathParam("uuid") UUID id, @Valid AdminDto adminDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException {
-        String jws = request.getHeader("If-Match");
-        if (jws == null) {
-            return Response.status(400).build();
+    @POST
+    @RolesAllowed({"ADMIN", "MANAGER", "NONE"})
+    public Response createUser(@Valid UserDto userDto) throws ManagerValidationFailed, IOException {
+        if (userDto.getAccessLevel().equals("CLIENT")) {
+            publisher.createUser(Publisher.Serialization
+                    .clientToJsonString(
+                            UserDtoMapper.toUser(userDto),
+                            userDto.getPersonalId(),
+                            userDto.getFirstName(),
+                            userDto.getLastName(),
+                            userDto.getAddress()
+                    ));
+        } else if (userDto.getAccessLevel().equals("MANAGER") || userDto.getAccessLevel().equals("ADMIN")) {
+            publisher.createUser(Publisher.Serialization.userToJsonString(UserDtoMapper.toUser(userDto)));
         }
-        if (userUseCase.getUserById(id) == null) {
-            return Response.status(404).build();
-        }
-        Admin admin = (Admin) userDtoMapper.toUser(adminDto);
-        userUseCase.updateUser(id, jws, null, null, null, admin.getLogin(), admin.getPassword(), admin.getAccessLevel());
-        return Response.ok().build();
-    }
-
-    @PUT
-    @Path("/manager/{uuid}")
-    @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
-    public Response updateUser(@PathParam("uuid") UUID id, @Valid ManagerDto managerDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException {
-        String jws = request.getHeader("If-Match");
-        if (jws == null) {
-            return Response.status(400).build();
-        }
-        if (userUseCase.getUserById(id) == null) {
-            return Response.status(404).build();
-        }
-        Manager manager = (Manager) userDtoMapper.toUser(managerDto);
-        userUseCase.updateUser(id, jws, null, null, null, manager.getLogin(), manager.getPassword(), manager.getAccessLevel());
-        return Response.ok().build();
+        return Response.status(201).build();
     }
 
     @GET
@@ -171,16 +134,6 @@ public class UserResourceAdapter {
         }
         return Response.ok().entity(userUseCase.getUserById(userId))
                 .header("ETag", getJwsFromUser(userId)).build();
-    }
-
-    @GET
-    @Path("/client/{uuid}")
-    @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
-    public Response getClient(@PathParam("uuid") UUID userId) throws UserWithGivenIdNotFound {
-        if (userUseCase.getClientById(userId) == null) {
-            return Response.status(404).build();
-        }
-        return Response.ok().entity(userUseCase.getClientById(userId)).build();
     }
 
     @PUT

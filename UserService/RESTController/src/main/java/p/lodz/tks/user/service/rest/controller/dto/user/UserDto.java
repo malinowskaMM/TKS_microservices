@@ -23,6 +23,11 @@ public class UserDto {
     @NotNull
     private String accessLevel;
 
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String personalId;
+
     @JsonbCreator
     public UserDto(@JsonbProperty("login")String login, @JsonbProperty("password")String password, @JsonbProperty("accessLevel")String accessLevel) {
         this.login = login;

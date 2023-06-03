@@ -67,26 +67,12 @@ public class UserRepository implements p.lodz.tks.user.service.repositories.adap
     }
 
     @Override
-    public UserEnt modifyUser(UUID id, String login, String password, AccessLevelEnt accessLevel , String firstName, String lastName, String address) {
+    public UserEnt modifyUser(UUID id, String login, String password, AccessLevelEnt accessLevel) {
         UserEnt user = getUserById(id);
         if(user != null) {
-            if(user instanceof ClientEnt client && accessLevel.getAccessLevel().equals(AccessLevelEnt.CLIENT.name())) {
-                client.setFirstName(firstName);
-                client.setLastName(lastName);
-                client.setAddress(address);
-                client.setLogin(login);
-                client.setPassword(password);
-                client.setAccessLevel(accessLevel);
-                return client;
-            } else if (user instanceof AdminEnt admin && accessLevel.getAccessLevel().equals(AccessLevelEnt.ADMIN.name())) {
-                admin.setLogin(login);
-                admin.setPassword(password);
-                admin.setAccessLevel(accessLevel);
-            } else if(user instanceof ManagerEnt manager && accessLevel.getAccessLevel().equals(AccessLevelEnt.MANAGER.name())) {
-                manager.setLogin(login);
-                manager.setPassword(password);
-                manager.setAccessLevel(accessLevel);
-            }
+            user.setLogin(login);
+            user.setPassword(password);
+            user.setAccessLevel(accessLevel);
         }
         return null;
     }
@@ -119,5 +105,11 @@ public class UserRepository implements p.lodz.tks.user.service.repositories.adap
 
     public void deleteUser(UUID id) {
         users.remove(getUserById(id));
+    }
+
+    public void addUser(UserEnt user) {
+        // if (isLoginUnique(user.getLogin())) {
+            users.add(user);
+        // }
     }
 }

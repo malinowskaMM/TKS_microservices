@@ -76,14 +76,19 @@ public class UserRepositoryAdapter implements CreateUserPort, DeleteUserPort, Ge
     }
 
     @Override
-    public User findUserByLogin(String login, String password) {
-        return UserEntConverter.convertUserEntToUser(userRepository.findUserByLogin(login, password));
+    public User findUserByLogin(String login) {
+        return UserEntConverter.convertUserEntToUser(userRepository.findUserByLogin(login));
     }
 
     @Override
-    public User modifyUser(UUID id, String login, String password, AccessLevel accessLevel, String firstName, String lastName, String address) {
+    public User modifyClient(UUID id, String login, String password, AccessLevel accessLevel, String firstName, String lastName, String address) {
         return UserEntConverter.convertUserEntToUser(userRepository.modifyUser(id, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel), firstName, lastName, address));
     }
+
+    // @Override
+    // public User modifyUser(UUID id, String login, String password, AccessLevel accessLevel) {
+    //     return UserEntConverter.convertUserEntToUser(userRepository.modifyUser(id, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    // }
 
     @Override
     public void activateUser(UUID id) {

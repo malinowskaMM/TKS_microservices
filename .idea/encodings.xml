@@ -9,9 +9,9 @@
     <file url="file://$PROJECT_DIR$/RentService/ApplicationCore/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/RentService/ApplicationPorts/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/RentService/ApplicationPorts/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/RentService/MessageQueue/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/RentService/MessageQueue/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/RentService/RESTController/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/RentService/RESTController/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/RentService/RESTController/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/RentService/RESTController/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/RentService/RentRepositories/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/RentService/RentRepositories/src/main/resources" charset="UTF-8" />
@@ -35,6 +35,8 @@
     <file url="file://$PROJECT_DIR$/UserService/ApplicationCore/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UserService/ApplicationPorts/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UserService/ApplicationPorts/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/UserService/MessageQueue/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/UserService/MessageQueue/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UserService/RESTController/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UserService/RESTController/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/UserService/Repositories/src/main/java" charset="UTF-8" />

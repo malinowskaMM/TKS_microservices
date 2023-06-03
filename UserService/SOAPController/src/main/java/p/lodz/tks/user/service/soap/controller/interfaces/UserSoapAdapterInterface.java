@@ -18,12 +18,6 @@ public interface UserSoapAdapterInterface {
 
         public void changeUserPassword(PasswordChangeSOAP passwordChangeSOAP);
 
-        public void createClient(ClientSOAP clientSOAP);
-
-        public void createAdmin(AdminSOAP adminSOAP);
-
-        public void createManager(ManagerSOAP managerSOAP);
-
         public List<ShowUserSOAP> getUsers();
 
         public List<ShowUserSOAP> getUsersByPartOfLogin(String partOfLogin);

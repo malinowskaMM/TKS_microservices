@@ -38,18 +38,6 @@ public class UserSoapAdapter implements UserSoapAdapterInterface {
         }
     }
 
-    public void createClient(ClientSOAP clientSOAP) {
-        userUseCase.registerClient(clientSOAP.getFirstName(), clientSOAP.getLastName(), clientSOAP.getPersonalId(), clientSOAP.getAddress(), clientSOAP.getLogin(), clientSOAP.getPassword());
-    }
-
-    public void createAdmin(AdminSOAP adminSOAP) {
-        userUseCase.registerAdmin(adminSOAP.getLogin(), adminSOAP.getPassword());
-    }
-
-    public void createManager(ManagerSOAP managerSOAP){
-        userUseCase.registerManager(managerSOAP.getLogin(), managerSOAP.getPassword());
-    }
-
     public List<ShowUserSOAP> getUsers() {
         return userUseCase.getAllUsers().stream().map(user -> {
             try {
@@ -88,9 +76,9 @@ public class UserSoapAdapter implements UserSoapAdapterInterface {
 
     public ClientSOAP getClient(String userId) throws UserSOAPException {
         UUID id = UUID.fromString(userId);
-        if (userUseCase.getClientById(id) == null) {
+        if (userUseCase.getUserById(id) == null) {
             throw new UserSOAPException("Cannot find user with given id");
         }
-        return UserSOAPConverter.convertClientToClientSOAP(userUseCase.getClientById(id));
+        return UserSOAPConverter.convertClientToClientSOAP(userUseCase.getUserByIdInside(id));
     }
 }

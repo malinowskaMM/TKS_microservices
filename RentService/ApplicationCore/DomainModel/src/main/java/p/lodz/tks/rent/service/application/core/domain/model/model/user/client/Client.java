@@ -21,6 +21,7 @@ public class Client extends User {
     @Setter
     private String address;
 
+    @Setter
     private Double moneySpent;
 
     public Client(String personalId, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) {

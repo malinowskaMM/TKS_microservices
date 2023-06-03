@@ -2,9 +2,9 @@ package p.lodz.tks.user.service.repositories.adapters.aggregates.user;
 
 import p.lodz.tks.user.service.application.core.domain.model.model.user.AccessLevel;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
+// import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
+// import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
+// import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
 import p.lodz.tks.user.service.application.ports.control.user.CreateUserPort;
 import p.lodz.tks.user.service.application.ports.control.user.DeleteUserPort;
 import p.lodz.tks.user.service.application.ports.control.user.ModifyUserPort;
@@ -26,19 +26,24 @@ public class UserRepositoryAdapter implements CreateUserPort, DeleteUserPort, Ge
     @Inject
     UserRepository userRepository;
 
-    @Override
-    public Client createClient(String personalId, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) {
-        return (Client) UserEntConverter.convertUserEntToUser(userRepository.createClient(personalId, firstName, lastName, address, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
-    }
+    // @Override
+    // public Client createClient(String personalId, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) {
+    //     return (Client) UserEntConverter.convertUserEntToUser(userRepository.createClient(personalId, firstName, lastName, address, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    // }
+    //
+    // @Override
+    // public Admin createAdmin(String login, String password, AccessLevel accessLevel) {
+    //     return (Admin) UserEntConverter.convertUserEntToUser(userRepository.createAdmin(login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    // }
+    //
+    // @Override
+    // public Manager createManager(String login, String password, AccessLevel accessLevel) {
+    //     return (Manager) UserEntConverter.convertUserEntToUser(userRepository.createManager(login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    // }
 
     @Override
-    public Admin createAdmin(String login, String password, AccessLevel accessLevel) {
-        return (Admin) UserEntConverter.convertUserEntToUser(userRepository.createAdmin(login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
-    }
-
-    @Override
-    public Manager createManager(String login, String password, AccessLevel accessLevel) {
-        return (Manager) UserEntConverter.convertUserEntToUser(userRepository.createManager(login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    public void addUser(User user) {
+        userRepository.addUser(UserEntConverter.convertUserToUserEnt(user));
     }
 
     @Override
@@ -79,8 +84,8 @@ public class UserRepositoryAdapter implements CreateUserPort, DeleteUserPort, Ge
     }
 
     @Override
-    public User modifyUser(UUID id, String login, String password, AccessLevel accessLevel, String firstName, String lastName, String address) {
-        return UserEntConverter.convertUserEntToUser(userRepository.modifyUser(id, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel), firstName, lastName, address));
+    public User modifyUser(UUID id, String login, String password, AccessLevel accessLevel) {
+        return UserEntConverter.convertUserEntToUser(userRepository.modifyUser(id, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
     }
 
     @Override

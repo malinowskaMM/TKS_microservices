@@ -17,7 +17,7 @@ public interface UserRepository {
     ManagerEnt createManager(String login, String password, AccessLevelEnt accessLevel);
     List<UserEnt> getUsers();
     List<UserEnt> getUsersBy(Predicate<UserEnt> predicate);
-    UserEnt modifyUser(UUID id, String login, String password, AccessLevelEnt accessLevel , String firstName, String lastName, String address);
+    UserEnt modifyUser(UUID id, String login, String password, AccessLevelEnt accessLevel);
     UserEnt getUserById(UUID id);
     void activateUser(UUID id);
     void deactivateUser(UUID id);

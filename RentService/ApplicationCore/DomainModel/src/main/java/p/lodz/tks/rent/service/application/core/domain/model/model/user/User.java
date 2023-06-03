@@ -9,6 +9,7 @@ import java.util.UUID;
 public abstract class User implements Serializable{
 
     @Getter
+    @Setter
     private UUID uuid;
     private boolean isActive;
 

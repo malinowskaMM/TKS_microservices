@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/UserService/pom.xml" />
         <option value="$PROJECT_DIR$/RentService/ApplicationCore/ApplicationServices/pom.xml" />
         <option value="$PROJECT_DIR$/RentService/ApplicationCore/DomainModel/pom.xml" />
+        <option value="$PROJECT_DIR$/RentService/MessageQueue/pom.xml" />
       </list>
     </option>
   </component>

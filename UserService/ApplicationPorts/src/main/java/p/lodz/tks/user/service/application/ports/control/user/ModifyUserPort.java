@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface ModifyUserPort {
 
-    User modifyUser(UUID id, String login, String password, AccessLevel accessLevel , String firstName, String lastName, String address);
+    User modifyUser(UUID id, String login, String password, AccessLevel accessLevel);
     void activateUser(UUID id);
     void deactivateUser(UUID id);
 }

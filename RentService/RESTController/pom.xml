@@ -9,7 +9,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <packaging>war</packaging>
-<!--    <groupId>p.lodz.tks.rent.service.rest.controller</groupId>-->
     <artifactId>RESTController</artifactId>
 
     <properties>
@@ -19,34 +18,34 @@
     </properties>
     <dependencies>
         <dependency>
-            <groupId>javax</groupId>
-            <artifactId>javaee-api</artifactId>
-            <version>8.0</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>p.lodz.tks.rent.service</groupId>
-            <artifactId>RepositoriesAdapters</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>p.lodz.tks.rent.service</groupId>
             <artifactId>ApplicationServices</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20220320</version>
+            <groupId>p.lodz.tks.rent.service</groupId>
+            <artifactId>UserInterface</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>9.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>jakarta.el</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>testcontainers</artifactId>
-            <version>1.15.3</version>
-            <scope>test</scope>
+            <artifactId>testcontainers-bom</artifactId>
+            <version>1.18.1</version>
+            <type>pom</type>
+            <scope>import</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
@@ -55,22 +54,16 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.2.1</version>
-            <scope>test</scope>
+            <groupId>p.lodz.tks.rent.service</groupId>
+            <artifactId>MessageQueue</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
-            <scope>test</scope>
+            <groupId>p.lodz.tks.rent.service</groupId>
+            <artifactId>RepositoriesAdapters</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

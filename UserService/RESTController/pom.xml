@@ -54,6 +54,12 @@
             <version>1.15.3</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>p.lodz.tks.user.service</groupId>
+            <artifactId>MessageQueue</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

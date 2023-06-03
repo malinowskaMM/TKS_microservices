@@ -81,19 +81,12 @@ public class UserService implements UserUseCase {
     }
 
     @Override
-    public synchronized void updateUser(UUID id, String jws, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) throws UserWithGivenIdNotFound, ParseException, JOSEException {
+    public synchronized void updateUser(UUID id, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) throws UserWithGivenIdNotFound, ParseException, JOSEException {
         final User user = getUserPort.getUserById(id);
         if (user == null) {
             throw new UserWithGivenIdNotFound("Not found user with given id");
         } else {
-            if (this.jwsGenerator.verify(jws)) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("uuid", user.getUuid().toString());
-                String newJwt = this.jwsGenerator.generateJws(jsonObject.toString());
-                if(newJwt.equals(jws)) {
-                    modifyUserPort.modifyUser(id, login, password, accessLevel ,firstName, lastName, address);
-                }
-            }
+            modifyUserPort.modifyClient(id, login, password, accessLevel ,firstName, lastName, address);
         }
     }
 
@@ -130,8 +123,8 @@ public class UserService implements UserUseCase {
     }
 
     @Override
-    public ShowUserDto findUserByLogin(String login, String password) {
-        return UserDtoMapper.toShowUserDto(getUserPort.findUserByLogin(login, password));
+    public ShowUserDto findUserByLogin(String login) {
+        return UserDtoMapper.toShowUserDto(getUserPort.findUserByLogin(login));
     }
 
     @Override

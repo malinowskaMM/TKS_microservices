@@ -17,12 +17,12 @@ public interface UserUseCase {
     Client registerClient(String firstName, String lastName, String personalId, String address, String login, String password);
     Manager registerManager(String login, String password);
     Admin registerAdmin(String login, String password);
-    void updateUser(UUID id, String jws, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) throws ParseException, JOSEException;
+    void updateUser(UUID id, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) throws ParseException, JOSEException;
     Client getClientById(UUID uuid);
     ShowUserDto getUserById(UUID id);
     User getUserByIdInside(UUID id);
     List<ShowUserDto> findClientsByLoginPart(String login);
-    ShowUserDto findUserByLogin(String login, String password);
+    ShowUserDto findUserByLogin(String login);
     List<ShowUserDto> findClients(Predicate<User> predicate);
     void activateUser(UUID id, String jws) throws JOSEException, ParseException;
     void deactivateUser(UUID id, String jws) throws JOSEException, ParseException;

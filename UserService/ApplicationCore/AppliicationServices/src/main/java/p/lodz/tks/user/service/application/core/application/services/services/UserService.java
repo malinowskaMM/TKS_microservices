@@ -1,14 +1,9 @@
 package p.lodz.tks.user.service.application.core.application.services.services;
 
-import com.nimbusds.jose.JOSEException;
-import org.json.simple.JSONObject;
-import p.lodz.tks.user.service.application.core.application.services.auth.JwsGenerator;
-import p.lodz.tks.user.service.application.core.domain.model.exceptions.*;
+import p.lodz.tks.user.service.application.core.domain.model.exceptions.PasswordMatch;
+import p.lodz.tks.user.service.application.core.domain.model.exceptions.UserWithGivenIdNotFound;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.AccessLevel;
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.admin.Admin;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.client.Client;
-import p.lodz.tks.user.service.application.core.domain.model.model.user.manager.Manager;
 import p.lodz.tks.user.service.application.ports.control.user.CreateUserPort;
 import p.lodz.tks.user.service.application.ports.control.user.DeleteUserPort;
 import p.lodz.tks.user.service.application.ports.control.user.ModifyUserPort;
@@ -19,11 +14,8 @@ import p.lodz.tks.user.service.user.UserUseCase;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.validation.Validation;
-import javax.validation.Validator;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
-import java.text.ParseException;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -46,64 +38,19 @@ public class UserService implements UserUseCase {
     @Context
     private SecurityContext securityContext;
 
-    private final JwsGenerator jwsGenerator = new JwsGenerator();
-
-    private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
-
     @Override
-    public synchronized Client registerClient(String firstName, String lastName, String personalId, String address, String login, String password) throws ClientValidationFailed {
-        final Client client = new Client(personalId, firstName, lastName, address, login, password, AccessLevel.CLIENT);
-        if (validator.validate(client).isEmpty()) {
-                    return createUserPort.createClient(client.getPersonalId(), client.getFirstName(), client.getLastName(), client.getAddress(), client.getLogin(), client.getPassword(), client.getAccessLevel());
-        } else {
-            throw new ClientValidationFailed("Cannot register client");
-        }
-    }
-
-    @Override
-    public synchronized Manager registerManager(String login, String password) throws ManagerValidationFailed {
-        final Manager manager = new Manager(login, password, AccessLevel.MANAGER);
-        if (validator.validate(manager).isEmpty()) {
-                return createUserPort.createManager(manager.getLogin(), manager.getPassword(), manager.getAccessLevel());
-        } else {
-            throw new ManagerValidationFailed("Cannot register manager");
-        }
-    }
-
-    @Override
-    public synchronized Admin registerAdmin(String login, String password) throws AdminValidationFailed {
-        final Admin admin = new Admin(login, password, AccessLevel.ADMIN);
-        if (validator.validate(admin).isEmpty()) {
-                return createUserPort.createAdmin(admin.getLogin(), admin.getPassword(), admin.getAccessLevel());
-        } else {
-            throw new AdminValidationFailed("Cannot register admin");
-        }
-    }
-
-    @Override
-    public synchronized void updateUser(UUID id, String jws, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) throws UserWithGivenIdNotFound, ParseException, JOSEException {
+    public synchronized void updateUser(UUID id, String login, String password, AccessLevel accessLevel) throws UserWithGivenIdNotFound {
         final User user = getUserPort.getUserById(id);
         if (user == null) {
             throw new UserWithGivenIdNotFound("Not found user with given id");
         } else {
-            if (this.jwsGenerator.verify(jws)) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("uuid", user.getUuid().toString());
-                String newJwt = this.jwsGenerator.generateJws(jsonObject.toString());
-                if(newJwt.equals(jws)) {
-                    modifyUserPort.modifyUser(id, login, password, accessLevel ,firstName, lastName, address);
-                }
-            }
+            modifyUserPort.modifyUser(id, login, password, accessLevel);
         }
     }
 
     @Override
-    public Client getClientById(UUID uuid) throws ClientWithGivenIdNotFound {
-            final Client client = (Client) getUserPort.getUserById(uuid);
-            if (client == null) {
-                throw new ClientWithGivenIdNotFound("Not found client with given id");
-            }
-            return client;
+    public void addUser(User user) {
+        createUserPort.addUser(user);
     }
 
     @Override
@@ -140,27 +87,13 @@ public class UserService implements UserUseCase {
     }
 
     @Override
-    public void activateUser(UUID id, String jws) throws UserWithGivenIdNotFound, JOSEException, ParseException {
-        if (this.jwsGenerator.verify(jws)) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("uuid", getUserByIdInside(id).getUuid().toString());
-            String newJwt = this.jwsGenerator.generateJws(jsonObject.toString());
-            if(newJwt.equals(jws)) {
-                modifyUserPort.activateUser(getUserByIdInside(id).getUuid());
-            }
-        }
+    public void activateUser(UUID id, String jws) throws UserWithGivenIdNotFound {
+        modifyUserPort.activateUser(getUserByIdInside(id).getUuid());
     }
 
     @Override
-    public void deactivateUser(UUID id, String jws) throws UserWithGivenIdNotFound, JOSEException, ParseException {
-        if (this.jwsGenerator.verify(jws)) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("uuid", getUserByIdInside(id).getUuid().toString());
-            String newJwt = this.jwsGenerator.generateJws(jsonObject.toString());
-            if(newJwt.equals(jws)) {
-                modifyUserPort.deactivateUser(getUserByIdInside(id).getUuid());
-            }
-        }
+    public void deactivateUser(UUID id, String jws) throws UserWithGivenIdNotFound {
+        modifyUserPort.deactivateUser(getUserByIdInside(id).getUuid());
     }
 
     @Override

@@ -91,8 +91,8 @@ public class UserRepository implements p.lodz.tks.rent.service.repositories.adap
         return null;
     }
 
-    public UserEnt findUserByLogin(String login, String password) {
-        return getUsers().stream().filter(user -> (user.getLogin().equals(login) && user.getPassword().equals(password))).toList().get(0);
+    public UserEnt findUserByLogin(String login) {
+        return getUsers().stream().filter(user -> (user.getLogin().equals(login))).toList().get(0);
     }
 
     @Override
