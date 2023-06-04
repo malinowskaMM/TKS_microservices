@@ -20,13 +20,14 @@ public interface UserUseCase {
     ShowUserDto getUserById(UUID id);
     User getUserByIdInside(UUID id);
     List<ShowUserDto> findClientsByLoginPart(String login);
-    ShowUserDto findUserByLogin(String login, String password);
+    ShowUserDto findUserByLogin(String login);
     List<ShowUserDto> findClients(Predicate<User> predicate);
     void activateUser(UUID id, String jws) throws JOSEException, ParseException;
     void deactivateUser(UUID id, String jws) throws JOSEException, ParseException;
     List<ShowUserDto> getAllUsers();
     List<User> getAllUsersInside();
     void deleteUser(UUID id);
+    void deleteUserByLogin(String login);
     boolean changePassword(String oldPassword, String newPassword);
     User getUserFromServerContext();
 }

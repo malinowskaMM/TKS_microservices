@@ -22,7 +22,7 @@ public class UserDto {
 
     @NotNull
     private String accessLevel;
-
+    private String uuid;
     private String firstName;
     private String lastName;
     private String address;

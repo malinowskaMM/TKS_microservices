@@ -12,9 +12,9 @@ import java.util.function.Predicate;
 
 public interface UserRepository {
 
-    ClientEnt createClient(String personalId, String firstName, String lastName, String address, String login, String password, AccessLevelEnt accessLevel);
-    AdminEnt createAdmin(String login, String password, AccessLevelEnt accessLevel);
-    ManagerEnt createManager(String login, String password, AccessLevelEnt accessLevel);
+    ClientEnt createClient(UUID uuid, String personalId, String firstName, String lastName, String address, String login, String password, AccessLevelEnt accessLevel);
+    AdminEnt createAdmin(UUID uuid, String login, String password, AccessLevelEnt accessLevel);
+    ManagerEnt createManager(UUID uuid, String login, String password, AccessLevelEnt accessLevel);
     List<UserEnt> getUsers();
     List<UserEnt> getUsersBy(Predicate<UserEnt> predicate);
     UserEnt modifyUser(UUID id, String login, String password, AccessLevelEnt accessLevel , String firstName, String lastName, String address);

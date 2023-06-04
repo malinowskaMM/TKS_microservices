@@ -16,6 +16,7 @@ import javax.json.Json;
 import javax.json.JsonObjectBuilder;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
 
@@ -29,7 +30,7 @@ public class Publisher {
     private static final String EXCHANGE_NAME = "users_exchange";
     private static final String EXCHANGE_TYPE = "topic";
     private static final String CREATE_USER_KEY = "user.create";
-    private static final String UPDATE_ROUTING_KEY = "user.update";
+    private static final String UPDATE_USER_KEY = "user.update";
     private static final String DELETE_USER_KEY = "user.delete";
     private Connection connection;
     private Channel channel;
@@ -93,7 +94,7 @@ public class Publisher {
         channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
         long sequenceNumber = channel.getNextPublishSeqNo();
         outstandingConfirms.put(sequenceNumber, json);
-        channel.basicPublish(EXCHANGE_NAME, UPDATE_ROUTING_KEY, null, json.getBytes(StandardCharsets.UTF_8));
+        channel.basicPublish(EXCHANGE_NAME, UPDATE_USER_KEY, null, json.getBytes(StandardCharsets.UTF_8));
     }
 
     public void deleteUser(String login) throws IOException {

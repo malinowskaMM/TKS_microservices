@@ -29,18 +29,18 @@ public class UserRepositoryAdapter implements CreateUserPort, DeleteUserPort, Ge
     UserRepository userRepository;
 
     @Override
-    public Client createClient(String personalId, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) {
-        return (Client) UserEntConverter.convertUserEntToUser(userRepository.createClient(personalId, firstName, lastName, address, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    public Client createClient(UUID uuid, String personalId, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) {
+        return (Client) UserEntConverter.convertUserEntToUser(userRepository.createClient(uuid, personalId, firstName, lastName, address, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
     }
 
     @Override
-    public Admin createAdmin(String login, String password, AccessLevel accessLevel) {
-        return (Admin) UserEntConverter.convertUserEntToUser(userRepository.createAdmin(login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    public Admin createAdmin(UUID uuid, String login, String password, AccessLevel accessLevel) {
+        return (Admin) UserEntConverter.convertUserEntToUser(userRepository.createAdmin(uuid, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
     }
 
     @Override
-    public Manager createManager(String login, String password, AccessLevel accessLevel) {
-        return (Manager) UserEntConverter.convertUserEntToUser(userRepository.createManager(login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
+    public Manager createManager(UUID uuid, String login, String password, AccessLevel accessLevel) {
+        return (Manager) UserEntConverter.convertUserEntToUser(userRepository.createManager(uuid, login, password, UserEntConverter.convertAccessLevelToAccessLevelEnt(accessLevel)));
     }
 
     @Override
@@ -51,6 +51,11 @@ public class UserRepositoryAdapter implements CreateUserPort, DeleteUserPort, Ge
     @Override
     public void deleteUser(UUID id) {
         userRepository.deleteUser(id);
+    }
+
+    @Override
+    public void deleteUserByLogin(String login) {
+        userRepository.deleteUser(userRepository.findUserByLogin(login).getUuid());
     }
 
     @Override

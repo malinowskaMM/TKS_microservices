@@ -27,9 +27,9 @@ public class UserRepository implements p.lodz.tks.rent.service.repositories.adap
     }
 
     @Override
-    public ClientEnt createClient(String personalId, String firstName, String lastName, String address, String login, String password, AccessLevelEnt accessLevel) {
+    public ClientEnt createClient(UUID uuid, String personalId, String firstName, String lastName, String address, String login, String password, AccessLevelEnt accessLevel) {
         if(isLoginUnique(login)) {
-            ClientEnt client = new ClientEnt(personalId, firstName, lastName, address, login, password, accessLevel);
+            ClientEnt client = new ClientEnt(uuid, personalId, firstName, lastName, address, login, password, accessLevel);
             users.add(client);
             return client;
         }
@@ -37,9 +37,9 @@ public class UserRepository implements p.lodz.tks.rent.service.repositories.adap
     }
 
     @Override
-    public AdminEnt createAdmin(String login, String password, AccessLevelEnt accessLevel) {
+    public AdminEnt createAdmin(UUID uuid, String login, String password, AccessLevelEnt accessLevel) {
         if(isLoginUnique(login)) {
-            AdminEnt admin = new AdminEnt(login, password, accessLevel);
+            AdminEnt admin = new AdminEnt(uuid, login, password, accessLevel);
             users.add(admin);
             return admin;
         }
@@ -47,9 +47,9 @@ public class UserRepository implements p.lodz.tks.rent.service.repositories.adap
     }
 
     @Override
-    public ManagerEnt createManager(String login, String password, AccessLevelEnt accessLevel) {
+    public ManagerEnt createManager(UUID uuid, String login, String password, AccessLevelEnt accessLevel) {
         if(isLoginUnique(login)) {
-            ManagerEnt manager = new ManagerEnt(login, password, accessLevel);
+            ManagerEnt manager = new ManagerEnt(uuid, login, password, accessLevel);
             users.add(manager);
             return manager;
         }

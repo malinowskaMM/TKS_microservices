@@ -5,4 +5,6 @@ import java.util.UUID;
 public interface DeleteUserPort {
 
     void deleteUser(UUID id);
+
+    void deleteUserByLogin(String login);
 }

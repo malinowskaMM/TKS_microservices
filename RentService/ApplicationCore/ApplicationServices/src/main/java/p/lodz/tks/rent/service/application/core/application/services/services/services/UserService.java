@@ -51,30 +51,30 @@ public class UserService implements UserUseCase {
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Override
-    public synchronized Client registerClient(String firstName, String lastName, String personalId, String address, String login, String password) throws ClientValidationFailed {
-        final Client client = new Client(personalId, firstName, lastName, address, login, password, AccessLevel.CLIENT);
+    public synchronized Client registerClient(UUID uuid, String firstName, String lastName, String personalId, String address, String login, String password) throws ClientValidationFailed {
+        final Client client = new Client(uuid, personalId, firstName, lastName, address, login, password, AccessLevel.CLIENT);
         if (validator.validate(client).isEmpty()) {
-                    return createUserPort.createClient(client.getPersonalId(), client.getFirstName(), client.getLastName(), client.getAddress(), client.getLogin(), client.getPassword(), client.getAccessLevel());
+                    return createUserPort.createClient(client.getUuid(), client.getPersonalId(), client.getFirstName(), client.getLastName(), client.getAddress(), client.getLogin(), client.getPassword(), client.getAccessLevel());
         } else {
             throw new ClientValidationFailed("Cannot register client");
         }
     }
 
     @Override
-    public synchronized Manager registerManager(String login, String password) throws ManagerValidationFailed {
-        final Manager manager = new Manager(login, password, AccessLevel.MANAGER);
+    public synchronized Manager registerManager(UUID uuid, String login, String password) throws ManagerValidationFailed {
+        final Manager manager = new Manager(uuid, login, password, AccessLevel.MANAGER);
         if (validator.validate(manager).isEmpty()) {
-                return createUserPort.createManager(manager.getLogin(), manager.getPassword(), manager.getAccessLevel());
+                return createUserPort.createManager(manager.getUuid(), manager.getLogin(), manager.getPassword(), manager.getAccessLevel());
         } else {
             throw new ManagerValidationFailed("Cannot register manager");
         }
     }
 
     @Override
-    public synchronized Admin registerAdmin(String login, String password) throws AdminValidationFailed {
+    public synchronized Admin registerAdmin(UUID uuid, String login, String password) throws AdminValidationFailed {
         final Admin admin = new Admin(login, password, AccessLevel.ADMIN);
         if (validator.validate(admin).isEmpty()) {
-                return createUserPort.createAdmin(admin.getLogin(), admin.getPassword(), admin.getAccessLevel());
+                return createUserPort.createAdmin(admin.getUuid(), admin.getLogin(), admin.getPassword(), admin.getAccessLevel());
         } else {
             throw new AdminValidationFailed("Cannot register admin");
         }
@@ -171,6 +171,10 @@ public class UserService implements UserUseCase {
         deleteUserPort.deleteUser(getUserByIdInside(id).getUuid());
     }
 
+    @Override
+    public void deleteUserByLogin(String login) {
+        deleteUserPort.deleteUserByLogin(login);
+    }
     @Override
     public boolean changePassword(String oldPassword, String newPassword) {
         User user = getAllUsersInside().stream().filter(user1 -> user1.getLogin().equals(securityContext.getUserPrincipal().getName())).findFirst().orElse(null);

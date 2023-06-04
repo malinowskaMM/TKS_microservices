@@ -126,11 +126,12 @@ public class Consumer {
         User user = prepareUser(message);
         if (user != null) {
             if (user instanceof Admin) {
-                userUseCase.registerAdmin(user.getLogin(), user.getPassword());
+                userUseCase.registerAdmin(user.getUuid(), user.getLogin(), user.getPassword());
             } else if (user instanceof Manager) {
-                userUseCase.registerManager(user.getLogin(), user.getPassword());
+                userUseCase.registerManager(user.getUuid(), user.getLogin(), user.getPassword());
             } else if (user instanceof Client) {
                 userUseCase.registerClient(
+                        user.getUuid(),
                         ((Client) user).getFirstName(),
                         ((Client) user).getLastName(),
                         ((Client) user).getPersonalId(),
@@ -149,8 +150,6 @@ public class Consumer {
         log.info("RentService: Attempting to update user");
         User user = prepareUser(message);
         if (user != null) {
-            user.setUuid(getUserUuid(message));
-
             if (user instanceof Client) {
                 userUseCase.updateUser(
                         user.getUuid(),
@@ -182,13 +181,7 @@ public class Consumer {
 
     private void removeUser(String message) {
         log.info("RentService: Removing user " + message);
-        userUseCase.deleteUser(UUID.fromString(message));
-    }
-
-    private UUID getUserUuid(String message) {
-        JsonReader reader = Json.createReader(new StringReader(message));
-        JsonObject jsonObject = reader.readObject();
-        return userUseCase.findUserByLogin(jsonObject.getString("login")).getUuid();
+        userUseCase.deleteUserByLogin(message);
     }
 
     private String getUserLogin(Delivery delivery) {
@@ -206,20 +199,52 @@ public class Consumer {
 
         switch (accessLevel) {
             case "admin" -> {
+                if (jsonObject.containsKey("uuid")){
+                    return new Admin(
+                            UUID.fromString(jsonObject.getString("uuid")),
+                            jsonObject.getString("login"),
+                            jsonObject.getString("password"),
+                            AccessLevel.ADMIN
+                    );
+                }
+
                 return new Admin(
                         jsonObject.getString("login"),
                         jsonObject.getString("password"),
                         AccessLevel.ADMIN
                 );
+
             }
             case "manager" -> {
+                if (jsonObject.containsKey("uuid")) {
+                    return new Manager(
+                            UUID.fromString(jsonObject.getString("uuid")),
+                            jsonObject.getString("login"),
+                            jsonObject.getString("password"),
+                            AccessLevel.MANAGER
+                    );
+                }
+
                 return new Manager(
-                        jsonObject.getString("login"),
-                        jsonObject.getString("password"),
-                        AccessLevel.MANAGER
+                    jsonObject.getString("login"),
+                    jsonObject.getString("password"),
+                    AccessLevel.MANAGER
                 );
             }
             case "client" -> {
+                if (jsonObject.containsKey("uuid")) {
+                    return new Client(
+                            UUID.fromString(jsonObject.getString("uuid")),
+                            jsonObject.getString("personalId"),
+                            jsonObject.getString("firstName"),
+                            jsonObject.getString("lastName"),
+                            jsonObject.getString("address"),
+                            jsonObject.getString("login"),
+                            jsonObject.getString("password"),
+                            AccessLevel.CLIENT
+                    );
+                }
+
                 return new Client(
                         jsonObject.getString("personalId"),
                         jsonObject.getString("firstName"),

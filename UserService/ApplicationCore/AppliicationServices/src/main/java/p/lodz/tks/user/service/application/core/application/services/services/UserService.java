@@ -77,8 +77,8 @@ public class UserService implements UserUseCase {
     }
 
     @Override
-    public ShowUserDto findUserByLogin(String login, String password) {
-        return UserDtoMapper.toShowUserDto(getUserPort.findUserByLogin(login, password));
+    public ShowUserDto findUserByLogin(String login) {
+        return UserDtoMapper.toShowUserDto(getUserPort.findUserByLogin(login));
     }
 
     @Override
@@ -109,6 +109,11 @@ public class UserService implements UserUseCase {
     @Override
     public void deleteUser(UUID id) throws UserWithGivenIdNotFound {
         deleteUserPort.deleteUser(getUserByIdInside(id).getUuid());
+    }
+
+    @Override
+    public void deleteUserByLogin(String login) {
+        deleteUserPort.deleteUserByLogin(login);
     }
 
     @Override

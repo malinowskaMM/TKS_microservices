@@ -14,9 +14,9 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public interface UserUseCase {
-    Client registerClient(String firstName, String lastName, String personalId, String address, String login, String password);
-    Manager registerManager(String login, String password);
-    Admin registerAdmin(String login, String password);
+    Client registerClient(UUID uuid, String firstName, String lastName, String personalId, String address, String login, String password);
+    Manager registerManager(UUID uuid, String login, String password);
+    Admin registerAdmin(UUID uuid, String login, String password);
     void updateUser(UUID id, String firstName, String lastName, String address, String login, String password, AccessLevel accessLevel) throws ParseException, JOSEException;
     Client getClientById(UUID uuid);
     ShowUserDto getUserById(UUID id);
@@ -29,6 +29,7 @@ public interface UserUseCase {
     List<ShowUserDto> getAllUsers();
     List<User> getAllUsersInside();
     void deleteUser(UUID id);
+    void deleteUserByLogin(String login);
     boolean changePassword(String oldPassword, String newPassword);
     User getUserFromServerContext();
 }

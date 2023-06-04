@@ -40,15 +40,15 @@ public class UserSoapAdapter implements UserSoapAdapterInterface {
     }
 
     public void createClient(ClientSOAP clientSOAP) {
-        userUseCase.registerClient(clientSOAP.getFirstName(), clientSOAP.getLastName(), clientSOAP.getPersonalId(), clientSOAP.getAddress(), clientSOAP.getLogin(), clientSOAP.getPassword());
+        userUseCase.registerClient(UUID.fromString(clientSOAP.getUuid()), clientSOAP.getFirstName(), clientSOAP.getLastName(), clientSOAP.getPersonalId(), clientSOAP.getAddress(), clientSOAP.getLogin(), clientSOAP.getPassword());
     }
 
     public void createAdmin(AdminSOAP adminSOAP) {
-        userUseCase.registerAdmin(adminSOAP.getLogin(), adminSOAP.getPassword());
+        userUseCase.registerAdmin(UUID.fromString(adminSOAP.getUuid()), adminSOAP.getLogin(), adminSOAP.getPassword());
     }
 
     public void createManager(ManagerSOAP managerSOAP){
-        userUseCase.registerManager(managerSOAP.getLogin(), managerSOAP.getPassword());
+        userUseCase.registerManager(UUID.fromString(managerSOAP.getUuid()), managerSOAP.getLogin(), managerSOAP.getPassword());
     }
 
     public List<ShowUserSOAP> getUsers() {

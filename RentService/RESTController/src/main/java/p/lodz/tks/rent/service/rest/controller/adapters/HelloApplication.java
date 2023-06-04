@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
+import java.util.UUID;
 
 @ApplicationPath("/api")
 @ApplicationScoped
@@ -26,8 +27,8 @@ public class HelloApplication extends Application {
     @PostConstruct
     public void addAdmin() {
         roomRepository.createRoom(1, 100.0, 2);
-        userRepository.createAdmin("adminLogin", "adminPassword", AccessLevelEnt.ADMIN);
-        userRepository.createManager("managerLogin", "managerPassword", AccessLevelEnt.MANAGER);
-        userRepository.createClient("11111111111", "clientName", "clientLastName", "clientAddress", "clientLogin", "clientPassword", AccessLevelEnt.CLIENT);
+        userRepository.createAdmin(UUID.randomUUID(), "adminLogin", "adminPassword", AccessLevelEnt.ADMIN);
+        userRepository.createManager(UUID.randomUUID(), "managerLogin", "managerPassword", AccessLevelEnt.MANAGER);
+        userRepository.createClient(UUID.randomUUID(), "11111111111", "clientName", "clientLastName", "clientAddress", "clientLogin", "clientPassword", AccessLevelEnt.CLIENT);
     }
 }

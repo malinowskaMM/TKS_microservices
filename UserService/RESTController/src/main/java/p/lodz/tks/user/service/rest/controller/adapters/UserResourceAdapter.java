@@ -65,14 +65,17 @@ public class UserResourceAdapter {
         if (userUseCase.getUserById(id) == null) {
             return Response.status(404).build();
         }
-
+        userDto.setUuid(id.toString());
         if (userDto.getAccessLevel().equals("CLIENT")) {
             publisher.updateUser(Publisher.Serialization
-                    .clientToJsonString(UserDtoMapper.toUser(userDto),
+                    .clientToJsonString(
+                            UserDtoMapper.toUser(userDto),
                             userDto.getPersonalId(),
                             userDto.getFirstName(),
                             userDto.getLastName(),
-                            userDto.getAddress()));
+                            userDto.getAddress()
+                    )
+            );
         } else if (userDto.getAccessLevel().equals("ADMIN") || userDto.getAccessLevel().equals("MANAGER")) {
             publisher.updateUser(Publisher.Serialization.userToJsonString(UserDtoMapper.toUser(userDto)));
         }
@@ -117,9 +120,8 @@ public class UserResourceAdapter {
     @RolesAllowed({"ADMIN", "MANAGER"})
     public Response deleteUser(@PathParam("uuid") UUID userId) throws UserWithGivenIdNotFound {
         try {
-            userUseCase.getUserById(userId);
-            userUseCase.deleteUser(userId);
-        } catch (UserWithGivenIdNotFound e) {
+            publisher.deleteUser(userUseCase.getUserById(userId).getLogin());
+        } catch (UserWithGivenIdNotFound | IOException e) {
             return Response.status(404).build();
         }
         return Response.ok().build();
@@ -134,6 +136,16 @@ public class UserResourceAdapter {
         }
         return Response.ok().entity(userUseCase.getUserById(userId))
                 .header("ETag", getJwsFromUser(userId)).build();
+    }
+
+    @GET
+    @Path("/findByLogin/{login}")
+    @RolesAllowed({"ADMIN", "MANAGER"})
+    public Response getUserByLogin(@PathParam("login") String login) throws UserWithGivenIdNotFound {
+        if (userUseCase.findUserByLogin(login) == null) {
+            return Response.status(404).build();
+        }
+        return Response.ok().entity(userUseCase.findUserByLogin(login)).build();
     }
 
     @PUT

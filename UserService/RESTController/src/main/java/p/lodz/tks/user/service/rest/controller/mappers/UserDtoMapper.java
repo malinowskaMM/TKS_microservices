@@ -6,10 +6,21 @@ import p.lodz.tks.user.service.application.core.domain.model.model.user.AccessLe
 import p.lodz.tks.user.service.application.core.domain.model.model.user.User;
 import p.lodz.tks.user.service.rest.controller.dto.user.*;
 
+import java.util.UUID;
+
 @NoArgsConstructor
 @Stateless
 public class UserDtoMapper {
     public static User toUser(UserDto userDto) {
+        if (userDto.getUuid() != null) {
+            return new User(
+                    UUID.fromString(userDto.getUuid()),
+                    true,
+                    userDto.getLogin(),
+                    userDto.getPassword(),
+                    AccessLevel.valueOf(userDto.getAccessLevel())
+            );
+        }
        return new User(
                true,
                userDto.getLogin(),

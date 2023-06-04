@@ -34,8 +34,7 @@ public class AuthIdentityStore implements IdentityStore {
     }
 
     public CredentialValidationResult validate(UsernamePasswordCredential credential) {
-            User user = getUserPort.findUserByLogin(credential.getCaller() /*loogin*/,
-                    credential.getPasswordAsString() /*pass*/);
+            User user = getUserPort.findUserByLogin(credential.getCaller());
             if (user != null && user.isActive()) {
                 return new CredentialValidationResult(user.getLogin(), /*role*/new HashSet<>(Collections.singleton(user.getAccessLevel().toString())));
             }

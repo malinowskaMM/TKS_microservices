@@ -12,7 +12,13 @@ public class UserEntConverter {
     }
 
     public static User convertUserEntToUser(UserEnt userEnt) {
-       return new User(userEnt.getUuid(), true, userEnt.getLogin(), userEnt.getPassword(), AccessLevel.valueOf(userEnt.getAccessLevel().getAccessLevel()));
+       return new User(
+               userEnt.getUuid(),
+               true,
+               userEnt.getLogin(),
+               userEnt.getPassword(),
+               AccessLevel.valueOf(userEnt.getAccessLevel().getAccessLevel())
+       );
     }
 
     public static AccessLevelEnt convertAccessLevelToAccessLevelEnt(AccessLevel accessLevel) {

@@ -21,7 +21,7 @@ public interface UserRepository {
     UserEnt getUserById(UUID id);
     void activateUser(UUID id);
     void deactivateUser(UUID id);
-    UserEnt findUserByLogin(String login, String password);
+    UserEnt findUserByLogin(String login);
     void deleteUser(UUID id);
     boolean isLoginUnique(String login);
 }

@@ -57,6 +57,12 @@ public class UserRepositoryAdapter implements CreateUserPort, DeleteUserPort, Ge
     }
 
     @Override
+    public void deleteUserByLogin(String login) {
+        UUID id = userRepository.findUserByLogin(login).getUuid();
+        userRepository.deleteUser(id);
+    }
+
+    @Override
     public User getUserById(UUID id) {
         return UserEntConverter.convertUserEntToUser(userRepository.getUserById(id));
     }
@@ -79,8 +85,8 @@ public class UserRepositoryAdapter implements CreateUserPort, DeleteUserPort, Ge
     }
 
     @Override
-    public User findUserByLogin(String login, String password) {
-        return UserEntConverter.convertUserEntToUser(userRepository.findUserByLogin(login, password));
+    public User findUserByLogin(String login) {
+        return UserEntConverter.convertUserEntToUser(userRepository.findUserByLogin(login));
     }
 
     @Override

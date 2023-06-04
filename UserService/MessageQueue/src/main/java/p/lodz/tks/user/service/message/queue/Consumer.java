@@ -105,6 +105,7 @@ public class Consumer {
                 try {
                     updateUser(new String(delivery.getBody(), StandardCharsets.UTF_8));
                 } catch (Exception e) {
+                    e.printStackTrace();
                     log.info("UserService: There was an error updating the user");
                 }
                 break;
@@ -140,12 +141,23 @@ public class Consumer {
 
     private void deleteUser(String message) {
         log.info("UserService: Removing user " + message);
-        userUseCase.deleteUser(UUID.fromString(message));
+        userUseCase.deleteUserByLogin(message);
     }
 
     private User prepareUser(String message) {
         JsonReader reader = Json.createReader(new StringReader(message));
         JsonObject jsonObject = reader.readObject();
+
+        if (jsonObject.containsKey("uuid")){
+            return new User(
+                    UUID.fromString(jsonObject.getString("uuid")),
+                    true,
+                    jsonObject.getString("login"),
+                    jsonObject.getString("password"),
+                    AccessLevel.valueOf(jsonObject.getString("accessLevel"))
+            );
+        }
+
         return new User(
                 true,
                 jsonObject.getString("login"),

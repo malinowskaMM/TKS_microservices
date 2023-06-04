@@ -12,5 +12,5 @@ public interface GetUserPort {
     User getUserById(UUID id);
     List<User> getUsers();
     List<User> getUsersBy(Predicate<User> predicate);
-    User findUserByLogin(String login, String password);
+    User findUserByLogin(String login);
 }
