@@ -1,6 +1,8 @@
 package p.lodz.tks.user.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.json.JSONObject;
 import p.lodz.tks.user.service.application.core.application.services.auth.JwsGenerator;
 import p.lodz.tks.user.service.application.core.domain.model.exceptions.ManagerValidationFailed;
@@ -42,6 +44,13 @@ public class UserResourceAdapter {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/passwordChange")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "changeUserPassword",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to change user password")
+    @Counted(name = "changeUserPasswordInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response changeUserPassword(@NotNull PasswordChangeDto passwordChangeDto) {
         if (passwordChangeDto.getNewPassword().equals(passwordChangeDto.getConfirmNewPassword())) {
             userUseCase.changePassword(passwordChangeDto.getOldPassword(), passwordChangeDto.getNewPassword());
@@ -54,6 +63,13 @@ public class UserResourceAdapter {
     @GET
     @Path("/ping")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT", "NONE"})
+    @Timed(name = "ping",
+            tags = {"method=ping"},
+            absolute = true,
+            description = "Time to ping")
+    @Counted(name = "pingInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response ping() {
         return Response.ok().build();
     }
@@ -61,6 +77,13 @@ public class UserResourceAdapter {
     @PUT
     @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "updateUser",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to update user")
+    @Counted(name = "updateUserInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response updateUser(@PathParam("uuid") UUID id, @Valid UserDto userDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, IOException {
         if (userUseCase.getUserById(id) == null) {
             return Response.status(404).build();
@@ -85,6 +108,13 @@ public class UserResourceAdapter {
 
     @POST
     @RolesAllowed({"ADMIN", "MANAGER", "NONE"})
+    @Timed(name = "createUser",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to create user")
+    @Counted(name = "createUserInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response createUser(@Valid UserDto userDto) throws ManagerValidationFailed, IOException {
         if (userDto.getAccessLevel().equals("CLIENT")) {
             publisher.createUser(Publisher.Serialization
@@ -104,6 +134,13 @@ public class UserResourceAdapter {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getUsers",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to get users")
+    @Counted(name = "getUsersInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getUsers() {
         return Response.ok().entity(userUseCase.getAllUsers()).build();
     }
@@ -111,6 +148,13 @@ public class UserResourceAdapter {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getUsersByPartOfLogin",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to get users by part of login")
+    @Counted(name = "getUsersByPartOfLoginInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getUsersByPartOfLogin(String partOfLogin) {
         return Response.ok().entity(userUseCase.findClientsByLoginPart(partOfLogin)).build();
     }
@@ -118,6 +162,13 @@ public class UserResourceAdapter {
     @DELETE
     @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "deleteUser",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to delete user")
+    @Counted(name = "deleteUserInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response deleteUser(@PathParam("uuid") UUID userId) throws UserWithGivenIdNotFound {
         try {
             publisher.deleteUser(userUseCase.getUserById(userId).getLogin());
@@ -130,6 +181,13 @@ public class UserResourceAdapter {
     @GET
     @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getUser",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to get user")
+    @Counted(name = "getUserInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getUser(@PathParam("uuid") UUID userId) throws UserWithGivenIdNotFound, JOSEException {
         if (userUseCase.getUserById(userId) == null) {
             return Response.status(404).build();
@@ -141,6 +199,13 @@ public class UserResourceAdapter {
     @GET
     @Path("/findByLogin/{login}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getUserByLogin",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to get user by login")
+    @Counted(name = "getUserByLoginInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getUserByLogin(@PathParam("login") String login) throws UserWithGivenIdNotFound {
         if (userUseCase.findUserByLogin(login) == null) {
             return Response.status(404).build();
@@ -151,6 +216,13 @@ public class UserResourceAdapter {
     @PUT
     @Path("/client/activate/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "activateUser",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to activate user")
+    @Counted(name = "activateUserInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response activateUser(@PathParam("uuid") UUID userId, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException {
         String jws = request.getHeader("If-Match");
         if (jws == null) {
@@ -166,6 +238,13 @@ public class UserResourceAdapter {
     @PUT
     @Path("/client/deactivate/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "deactivateUser",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to deactivate user")
+    @Counted(name = "deactivateUserInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response deactivateUser(@PathParam("uuid") UUID userId, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException {
         String jws = request.getHeader("If-Match");
         if (jws == null) {

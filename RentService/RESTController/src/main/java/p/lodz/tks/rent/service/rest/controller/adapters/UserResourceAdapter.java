@@ -2,6 +2,9 @@ package p.lodz.tks.rent.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
 import javax.validation.Valid;
+
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.json.JSONObject;
 import p.lodz.tks.rent.service.application.core.application.services.services.auth.JwsGenerator;
 import p.lodz.tks.rent.service.application.core.domain.model.exceptions.UserWithGivenIdNotFound;
@@ -41,6 +44,13 @@ public class UserResourceAdapter {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMIN", "MANAGER", "NONE"})
+    @Timed(name = "getUsers",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to get users")
+    @Counted(name = "getUsersInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getUsers() {
         return Response.ok().entity(userUseCase.getAllUsers()).build();
     }
@@ -48,6 +58,13 @@ public class UserResourceAdapter {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getUsersByPartOfLogin",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to get users by part of login")
+    @Counted(name = "getUsersByPartOfLoginInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getUsersByPartOfLogin(String partOfLogin) {
         return Response.ok().entity(userUseCase.findClientsByLoginPart(partOfLogin)).build();
     }
@@ -55,6 +72,13 @@ public class UserResourceAdapter {
     @PUT
     @Path("/client/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "updateClient",
+            tags = {"method=client"},
+            absolute = true,
+            description = "Time to update client")
+    @Counted(name = "updateClientInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response updateClient(@PathParam("uuid") UUID id, @Valid ClientDto clientDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException {
         String jws = request.getHeader("If-Match");
         if (jws == null) {
@@ -71,6 +95,13 @@ public class UserResourceAdapter {
     @PUT
     @Path("/admin/{uuid}")
     @RolesAllowed({"ADMIN"})
+    @Timed(name = "updateAdmin",
+            tags = {"method=admin"},
+            absolute = true,
+            description = "Time to update admin")
+    @Counted(name = "updateAdminInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response updateAdmin(@PathParam("uuid") UUID id, @Valid AdminDto adminDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException, ParseException {
         String jws = request.getHeader("If-Match");
         if (jws == null) {
@@ -87,6 +118,13 @@ public class UserResourceAdapter {
     @PUT
     @Path("/manager/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "updateManager",
+            tags = {"method=manager"},
+            absolute = true,
+            description = "Time to update manager")
+    @Counted(name = "updateManagerInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response updateManager(@PathParam("uuid") UUID id, @Valid ManagerDto managerDto, @Context HttpServletRequest request) throws UserWithGivenIdNotFound, ParseException, JOSEException {
         String jws = request.getHeader("If-Match");
         if (jws == null) {
@@ -103,6 +141,13 @@ public class UserResourceAdapter {
     @GET
     @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getUser",
+            tags = {"method=user"},
+            absolute = true,
+            description = "Time to get user")
+    @Counted(name = "getUserInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getUser(@PathParam("uuid") UUID userId) throws UserWithGivenIdNotFound, JOSEException {
         if (userUseCase.getUserById(userId) == null) {
             return Response.status(404).build();

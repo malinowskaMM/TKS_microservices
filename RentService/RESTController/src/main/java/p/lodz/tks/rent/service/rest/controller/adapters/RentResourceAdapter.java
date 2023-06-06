@@ -2,6 +2,9 @@ package p.lodz.tks.rent.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
 import javax.ws.rs.*;
+
+import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.json.JSONObject;
 import p.lodz.tks.rent.service.application.core.application.services.services.auth.JwsGenerator;
 import p.lodz.tks.rent.service.rest.controller.dto.rent.RentDto;
@@ -35,6 +38,13 @@ public class RentResourceAdapter {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getAllRent",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get all rents")
+    @Counted(name = "getAllRentsInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getRents() {
         return Response.ok().entity(rentUseCase.getRents()).build();
     }
@@ -43,6 +53,13 @@ public class RentResourceAdapter {
     @Path("/room")
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getFreeRooms",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get free rooms")
+    @Counted(name = "getFreeRoomsInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getFreeRooms() {
         return Response.ok().entity(rentUseCase.getCurrentFreeRooms()).build();
     }
@@ -51,6 +68,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/room/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getRentsByRoom",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get rents by room")
+    @Counted(name = "getRentsByRoomInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getRentsByRoom(@PathParam("uuid") UUID roomId) {
         return Response.ok().entity(rentUseCase.getRentsByRoomId(roomId)).build();
     }
@@ -59,6 +83,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/client/{login}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getRentsByClient",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get rents by client")
+    @Counted(name = "getRentsByClientInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getRentsByClient(@PathParam("login") String login) {
         return Response.ok().entity(rentUseCase.getRentsByClientId(login)).build();
     }
@@ -68,6 +99,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/startDate")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getRentsByStartDate",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get rents by start date")
+    @Counted(name = "getRentsByStartDateRentsInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getRentsByStartDate(@QueryParam("startDate") String startDate) {
         LocalDateTime date = LocalDateTime.parse(startDate);
         return Response.ok().entity(rentUseCase.getRentsByStartDate(date)).build();
@@ -78,6 +116,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/endDate")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getRentsByEndDate",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get rents by end date")
+    @Counted(name = "geRentsByEndDateInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getRentsByEndDate(@QueryParam("endDate") String endDate) {
         LocalDateTime date = LocalDateTime.parse(endDate);
         return Response.ok().entity(rentUseCase.getRentsByEndDate(date)).build();
@@ -87,6 +132,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/archived")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getPastRents",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get past rents")
+    @Counted(name = "getPastRentsInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getPastRents() {
         return Response.ok().entity(rentUseCase.getPastRents()).build();
     }
@@ -95,6 +147,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/current/client/{login}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getCurrentRentsByClientId",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get current rents by client ID")
+    @Counted(name = "getCurrentRentsByClientIdInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getCurrentRentsByClientId(@PathParam("login") String login) {
         return Response.ok().entity(rentUseCase.getCurrentRentsByClientId(login)).build();
     }
@@ -103,6 +162,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/archived/client/{login}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getPastRentsByClientId",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get past rents by client ID")
+    @Counted(name = "getPastRentsByClientIdInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getPastRentsByClientId(@PathParam("login") String login) {
         return Response.ok().entity(rentUseCase.getPastRentsByClientId(login)).build();
     }
@@ -119,6 +185,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/archived/room/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "getPastRentsByRoomId",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get past rents by room ID")
+    @Counted(name = "getPastRentsByRoomIdInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getPastRentsByRoomId(@PathParam("uuid") UUID roomId) {
         return Response.ok().entity(rentUseCase.getPastRentsByRoomId(roomId)).build();
     }
@@ -127,6 +200,13 @@ public class RentResourceAdapter {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/current")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getCurrentRents",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get current rents")
+    @Counted(name = "getCurrentRentsInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getCurrentRents() {
         return Response.ok().entity(rentUseCase.getCurrentRents()).build();
     }
@@ -134,6 +214,13 @@ public class RentResourceAdapter {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "rentRoom",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to rent a room")
+    @Counted(name = "getRentRoomInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response rentRoom(@Valid RentDto rentDto) {
         Rent rent = rentDtoMapper.toRent(rentDto);
         Rent rentResult = rentUseCase.rentRoom(rent.getRoomId(), rent.getBeginTime(), rent.getEndTime());
@@ -143,6 +230,13 @@ public class RentResourceAdapter {
     @PUT
     @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "endRent",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to end a rent")
+    @Counted(name = "getEndRentInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response endRent(@PathParam("uuid") UUID rentId, @Context HttpServletRequest request) throws ParseException, JOSEException {
         String jws = request.getHeader("If-Match");
         if (jws == null) {
@@ -158,6 +252,13 @@ public class RentResourceAdapter {
     @GET
     @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER", "CLIENT"})
+    @Timed(name = "getRent",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to get rent")
+    @Counted(name = "getRentInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response getRent(@PathParam("uuid") UUID rentId) throws JOSEException {
         if(rentUseCase.getRent(rentId) == null) {
             return Response.status(404).build();
@@ -169,6 +270,13 @@ public class RentResourceAdapter {
     @DELETE
     @Path("/{uuid}")
     @RolesAllowed({"ADMIN", "MANAGER"})
+    @Timed(name = "deleteRent",
+            tags = {"method=rent"},
+            absolute = true,
+            description = "Time to delete a rent")
+    @Counted(name = "deleteRentInvocations",
+            absolute = true,
+            description = "Number of invocations")
     public Response deleteRent(@PathParam("uuid") UUID rentId) {
         if(rentUseCase.getRent(rentId) == null) {
             return Response.status(404).build();
