@@ -12,10 +12,10 @@ import p.lodz.tks.user.service.dto.user.ShowUserDto;
 import p.lodz.tks.user.service.dto.user.mapper.UserDtoMapper;
 import p.lodz.tks.user.service.user.UserUseCase;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.SecurityContext;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.SecurityContext;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;

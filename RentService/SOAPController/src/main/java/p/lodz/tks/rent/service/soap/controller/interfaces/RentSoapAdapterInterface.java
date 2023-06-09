@@ -6,7 +6,7 @@ import p.lodz.tks.rent.service.soap.controller.model.rent.RentSOAP;
 import p.lodz.tks.rent.service.soap.controller.model.rent.RentSOAPException;
 import p.lodz.tks.rent.service.soap.controller.model.room.RoomSOAP;
 
-import javax.jws.WebService;
+import jakarta.jws.WebService;
 import java.util.List;
 
 @WebService

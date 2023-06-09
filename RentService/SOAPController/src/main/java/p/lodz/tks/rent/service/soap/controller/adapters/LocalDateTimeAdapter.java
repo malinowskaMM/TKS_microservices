@@ -2,7 +2,7 @@ package p.lodz.tks.rent.service.soap.controller.adapters;
 
 import lombok.AllArgsConstructor;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 

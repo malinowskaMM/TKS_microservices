@@ -3,9 +3,9 @@ package p.lodz.tks.rent.service.dto.rent;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.json.bind.annotation.JsonbCreator;
-import javax.json.bind.annotation.JsonbProperty;
-import javax.validation.constraints.NotNull;
+import jakarta.json.bind.annotation.JsonbCreator;
+import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter

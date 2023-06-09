@@ -2,8 +2,8 @@ package p.lodz.tks.user.service.repositories.adapters.dto.user;
 
 import lombok.Getter;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Getter
 public class ClientDtoEnt extends UserDtoEnt {

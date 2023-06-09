@@ -1,6 +1,6 @@
 package p.lodz.tks.rent.service.rest.controller.mappers;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 import lombok.NoArgsConstructor;
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.AccessLevel;
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.User;

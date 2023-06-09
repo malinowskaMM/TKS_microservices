@@ -3,7 +3,7 @@ package p.lodz.tks.rent.service.repositories.adapters.repositoriesImplementation
 
 import p.lodz.tks.rent.service.repositories.modelEnt.room.RoomEnt;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

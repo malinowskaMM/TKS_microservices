@@ -7,10 +7,10 @@ import p.lodz.tks.rent.service.soap.controller.model.room.RoomSOAP;
 import p.lodz.tks.rent.service.soap.controller.model.room.RoomSOAPConverter;
 import p.lodz.tks.rent.service.soap.controller.model.room.RoomSOAPException;
 
-import javax.inject.Inject;
-import javax.jws.WebParam;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+import jakarta.inject.Inject;
+import jakarta.jws.WebParam;
+import jakarta.jws.WebService;
+import jakarta.jws.soap.SOAPBinding;
 import java.util.List;
 import java.util.UUID;
 

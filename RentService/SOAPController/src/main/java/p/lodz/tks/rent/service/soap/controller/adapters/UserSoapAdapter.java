@@ -13,9 +13,9 @@ import p.lodz.tks.rent.service.soap.controller.model.user.client.ClientSOAP;
 import p.lodz.tks.rent.service.soap.controller.model.user.manager.ManagerSOAP;
 import p.lodz.tks.rent.service.user.UserUseCase;
 
-import javax.inject.Inject;
-import javax.jws.WebService;
-import javax.jws.soap.SOAPBinding;
+import jakarta.inject.Inject;
+import jakarta.jws.WebService;
+import jakarta.jws.soap.SOAPBinding;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.UUID;

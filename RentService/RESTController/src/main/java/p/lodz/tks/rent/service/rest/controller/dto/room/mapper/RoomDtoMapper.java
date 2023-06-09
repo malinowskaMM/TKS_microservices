@@ -4,7 +4,7 @@ import lombok.NoArgsConstructor;
 import p.lodz.tks.rent.service.rest.controller.dto.room.RoomDto;
 import p.lodz.tks.rent.service.application.core.domain.model.model.room.Room;
 
-import javax.ejb.Stateless;
+import jakarta.ejb.Stateless;
 
 
 @NoArgsConstructor

@@ -1,7 +1,7 @@
 package p.lodz.tks.rent.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
@@ -18,13 +18,13 @@ import p.lodz.tks.rent.service.rest.controller.dto.user.ManagerDto;
 import p.lodz.tks.rent.service.rest.controller.dto.user.mapper.UserDtoMapper;
 import p.lodz.tks.rent.service.user.UserUseCase;
 
-import javax.annotation.security.RolesAllowed;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.annotation.security.RolesAllowed;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.text.ParseException;
 import java.util.UUID;
 

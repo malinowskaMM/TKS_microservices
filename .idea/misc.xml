@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/RentService/RESTController" />
+    <file type="web" url="file://$PROJECT_DIR$/UserService/RESTController" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>

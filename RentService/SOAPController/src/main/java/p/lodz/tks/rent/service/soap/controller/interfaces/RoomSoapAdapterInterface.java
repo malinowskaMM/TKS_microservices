@@ -4,7 +4,7 @@ package p.lodz.tks.rent.service.soap.controller.interfaces;
 import p.lodz.tks.rent.service.soap.controller.model.room.RoomSOAP;
 import p.lodz.tks.rent.service.soap.controller.model.room.RoomSOAPException;
 
-import javax.jws.WebService;
+import jakarta.jws.WebService;
 import java.util.List;
 
 @WebService

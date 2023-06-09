@@ -7,7 +7,7 @@ import p.lodz.tks.rent.service.application.core.domain.model.model.user.client.C
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.manager.Manager;
 import p.lodz.tks.rent.service.dto.user.*;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class UserDtoMapper {

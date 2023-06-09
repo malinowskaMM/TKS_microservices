@@ -7,7 +7,7 @@ import p.lodz.tks.rent.service.soap.controller.model.user.admin.AdminSOAP;
 import p.lodz.tks.rent.service.soap.controller.model.user.client.ClientSOAP;
 import p.lodz.tks.rent.service.soap.controller.model.user.manager.ManagerSOAP;
 
-import javax.jws.WebService;
+import jakarta.jws.WebService;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 

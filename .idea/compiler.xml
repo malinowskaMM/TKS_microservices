@@ -7,38 +7,42 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="RESTController (1) (p.lodz.tks.rent.service)" />
-        <module name="MessageQueue (1) (p.lodz.tks.rent.service)" />
+        <module name="Repositories" />
+        <module name="DomainModel" />
         <module name="DomainModel (1) (p.lodz.tks.rent.service)" />
-        <module name="DomainModel (2) (p.lodz.tks.user.service.application.core.domain.model)" />
         <module name="RESTController (2) (p.lodz.tks.user.service)" />
         <module name="RepositoriesAdapters (1) (p.lodz.tks.rent.service)" />
-        <module name="UserInterface (1) (p.lodz.tks.rent.service)" />
         <module name="ApplicationServices (2) (p.lodz.tks.user.service.application.core.application.services)" />
         <module name="RepositoriesAdapters (2) (p.lodz.tks.user.service.repositories.adapters)" />
-        <module name="ApplicationPorts (1) (p.lodz.tks.rent.service)" />
+        <module name="UserInterface (1) (p.lodz.tks.rent.service)" />
         <module name="ApplicationServices (1) (p.lodz.tks.rent.service)" />
-        <module name="ApplicationPorts (2) (p.lodz.tks.user.service.application.ports)" />
-        <module name="Repositories (1) (p.lodz.tks.rent.service)" />
         <module name="SOAPController (2) (p.lodz.tks.user.service.soap.controller)" />
-        <module name="UserInterface (2) (p.lodz.tks.user.service.user.interface)" />
-        <module name="MessageQueue (2) (p.lodz.tks.user.service)" />
         <module name="Repositories (2) (p.lodz.tks.user.service.repositories)" />
         <module name="SOAPController (1) (p.lodz.tks.rent.service)" />
+        <module name="ApplicationServices" />
+        <module name="RESTController" />
+        <module name="RESTController (1) (p.lodz.tks.rent.service)" />
+        <module name="MessageQueue (1) (p.lodz.tks.rent.service)" />
+        <module name="DomainModel (2) (p.lodz.tks.user.service.application.core.domain.model)" />
+        <module name="UserInterface" />
+        <module name="RepositoriesAdapters" />
+        <module name="ApplicationPorts (1) (p.lodz.tks.rent.service)" />
+        <module name="ApplicationPorts (2) (p.lodz.tks.user.service.application.ports)" />
+        <module name="Repositories (1) (p.lodz.tks.rent.service)" />
+        <module name="UserInterface (2) (p.lodz.tks.user.service.user.interface)" />
+        <module name="MessageQueue (2) (p.lodz.tks.user.service)" />
+        <module name="ApplicationPorts" />
+        <module name="SOAPController" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ApplicationCore" target="17" />
       <module name="ApplicationCore (2)" target="17" />
       <module name="ApplicationCore-UserService" target="17" />
-      <module name="ApplicationPorts" target="17" />
       <module name="ApplicationPorts (2)" target="17" />
       <module name="ApplicationPorts-UserService" target="17" />
-      <module name="ApplicationServices" target="17" />
       <module name="ApplicationServices (2)" target="17" />
       <module name="AppliicationServices" target="17" />
       <module name="AppliicationServices-UserService" target="17" />
-      <module name="DomainModel" target="17" />
       <module name="DomainModel (2)" target="17" />
       <module name="DomainModel-UserService" target="17" />
       <module name="MessageQueue" target="17" />
@@ -49,22 +53,17 @@
       <module name="RentRESTController" target="17" />
       <module name="RentROAPController" target="19" />
       <module name="RentUserInterface" target="19" />
-      <module name="Repositories" target="17" />
       <module name="Repositories (2)" target="17" />
       <module name="Repositories-UserService" target="17" />
-      <module name="RepositoriesAdapters" target="17" />
       <module name="RepositoriesAdapters (2)" target="17" />
       <module name="RepositoriesAdapters-UserService" target="17" />
       <module name="RestController" target="17" />
-      <module name="RESTController" target="17" />
       <module name="RESTController (1) (p.lodz.tks.rent.service.rest.controller)" target="17" />
       <module name="RESTController (2)" target="17" />
       <module name="RESTController (2) (p.lodz.tks.user.service.rest.controller)" target="17" />
       <module name="RESTController-UserService" target="17" />
-      <module name="SOAPController" target="17" />
       <module name="SOAPController (2)" target="17" />
       <module name="SOAPController-UserService" target="17" />
-      <module name="UserInterface" target="17" />
       <module name="UserInterface (2)" target="17" />
       <module name="UserInterface-UserService" target="17" />
       <module name="UserService (2)" target="17" />
