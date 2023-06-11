@@ -18,6 +18,13 @@
     </properties>
     <dependencies>
         <dependency>
+            <groupId>org.eclipse.microprofile</groupId>
+            <artifactId>microprofile</artifactId>
+            <version>3.3</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>p.lodz.tks.rent.service</groupId>
             <artifactId>ApplicationServices</artifactId>
             <version>1.0-SNAPSHOT</version>
@@ -64,13 +71,6 @@
             <artifactId>RepositoriesAdapters</artifactId>
             <version>1.0-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.microprofile</groupId>
-            <artifactId>microprofile</artifactId>
-            <version>3.2</version>
-            <type>pom</type>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 

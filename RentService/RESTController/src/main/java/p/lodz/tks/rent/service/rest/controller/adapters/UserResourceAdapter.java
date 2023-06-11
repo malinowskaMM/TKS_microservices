@@ -1,6 +1,8 @@
 package p.lodz.tks.rent.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
+
+import javax.ejb.Stateless;
 import javax.validation.Valid;
 
 import org.eclipse.microprofile.metrics.annotation.Counted;
@@ -29,6 +31,7 @@ import java.text.ParseException;
 import java.util.UUID;
 
 @Path("/users")
+@Stateless
 public class UserResourceAdapter {
 
     @Inject

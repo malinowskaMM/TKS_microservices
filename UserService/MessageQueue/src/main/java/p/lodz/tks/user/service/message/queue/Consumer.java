@@ -31,15 +31,15 @@ public class Consumer {
     @Inject
     Publisher publisher;
 
-    private static final String HOST_NAME = "localhost";
-    private static final int PORT_NUMBER = 5672;
-    private static final String USERNAME = "guest";
-    private static final String PASSWORD = "guest";
-    private static final String EXCHANGE_NAME = "users_exchange";
-    private static final String EXCHANGE_TYPE = "topic";
-    private static final String CREATE_USER_KEY = "user.create";
-    private static final String UPDATE_USER_KEY = "user.update";
-    private static final String DELETE_USER_KEY = "user.delete";
+    private static final String HOST_NAME = RabbitMQConfig.HOST_NAME;
+    private static final int PORT_NUMBER = RabbitMQConfig.PORT_NUMBER;
+    private static final String USERNAME = RabbitMQConfig.USERNAME;
+    private static final String PASSWORD = RabbitMQConfig.PASSWORD;
+    private static final String EXCHANGE_NAME = RabbitMQConfig.EXCHANGE_NAME;
+    private static final String EXCHANGE_TYPE = RabbitMQConfig.EXCHANGE_TYPE;
+    private static final String CREATE_USER_KEY = RabbitMQConfig.CREATE_USER_KEY;
+    private static final String UPDATE_USER_KEY = RabbitMQConfig.UPDATE_USER_KEY;
+    private static final String DELETE_USER_KEY = RabbitMQConfig.DELETE_USER_KEY;
     private Connection connection;
     private Channel channel;
     private String queueName;

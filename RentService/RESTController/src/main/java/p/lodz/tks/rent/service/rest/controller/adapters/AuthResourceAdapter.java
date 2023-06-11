@@ -6,6 +6,7 @@ import p.lodz.tks.rent.service.application.core.application.services.services.au
 import p.lodz.tks.rent.service.rest.controller.dto.auth.AuthDto;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.security.enterprise.credential.UsernamePasswordCredential;

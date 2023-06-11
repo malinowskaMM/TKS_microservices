@@ -2,6 +2,7 @@ package p.lodz.tks.rent.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ import java.text.ParseException;
 import java.util.UUID;
 
 @Path("/rooms")
+@Stateless
 public class  RoomResourceAdapter {
 
     @Inject

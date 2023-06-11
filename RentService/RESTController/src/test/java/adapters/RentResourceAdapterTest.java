@@ -3,11 +3,9 @@ package adapters;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import net.bytebuddy.utility.dispatcher.JavaDispatcher;
 import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
@@ -30,7 +28,8 @@ public class RentResourceAdapterTest {
 
     Formatter formatter = new Formatter();
 
-    String CONTAINER_URL;
+    String RENT_CONTAINER_URL;
+    String USER_CONTAINER_URL;
 
     @Container
     private static final GenericContainer restService = new GenericContainer<>(
@@ -44,10 +43,24 @@ public class RentResourceAdapterTest {
             .withExposedPorts(8080, 4848)
             .waitingFor(Wait.forHttp("/TKS-2023-RentRestApi/api/rooms/test").forPort(8080).forStatusCode(200));
 
+    @Container
+    private static final GenericContainer userService = new GenericContainer<>(
+            new ImageFromDockerfile()
+                    .withDockerfileFromBuilder(builder -> builder
+                            .from("payara/server-full:5.2022.5-jdk17")
+                            .copy("TKS-2023-UserRestApi.war", "/opt/payara/deployments")
+                            .build())
+                    .withFileFromPath("TKS-2023-UserRestApi.war", Path.of("target", "TKS-2023-UserRestApi.war"))
+    )
+            .withExposedPorts(8080, 4848)
+            .waitingFor(Wait.forHttp("/TKS-2023-UserRestApi/api/users/ping").forPort(8080).forStatusCode(200));
+
     @Before
     public void initialize() {
         restService.start();
-        CONTAINER_URL = formatter.format("http://localhost:%d/TKS-2023-RentRestApi", restService.getMappedPort(8080)).toString();
+        userService.start();
+        RENT_CONTAINER_URL = formatter.format("http://localhost:%d/TKS-2023-RentRestApi", restService.getMappedPort(8080)).toString();
+        USER_CONTAINER_URL = formatter.format("http://localhost:%d/TKS-2023-UserRestApi", userService.getMappedPort(8080)).toString();
         RestAssured.reset();
 
         JSONObject authDto = new JSONObject();
@@ -58,7 +71,7 @@ public class RentResourceAdapterTest {
                 header("Content-Type","application/json" ).
                 header("Accept","application/json" ).
                 body(authDto.toJSONString()).when().
-                post(CONTAINER_URL +"/api/login");
+                post(USER_CONTAINER_URL +"/api/login");
 
         token = auth.getBody().asString();
 
@@ -72,7 +85,7 @@ public class RentResourceAdapterTest {
                 header("Content-Type","application/json" ).
                 header("Accept","application/json" ).
                 body(createRoomRequest.toJSONString()).when().
-                post(CONTAINER_URL +"/api/rooms").
+                post(RENT_CONTAINER_URL +"/api/rooms").
                 then().statusCode(200)
                 .extract().path("uuid");
 
@@ -87,13 +100,21 @@ public class RentResourceAdapterTest {
         createClientRequest.put("lastName", "Kowalski");
         createClientRequest.put("address", "Pawia 23/25 m 13 Warszawa 00-000");
 
-        exampleClientUUID = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type","application/json" ).
                 header("Accept","application/json" ).
                 body(createClientRequest.toJSONString()).when().
-                post(CONTAINER_URL +"/api/users/client").
-                then().statusCode(200)
+                post(USER_CONTAINER_URL +"/api/users/").
+                then().statusCode(201);
+
+        exampleClientUUID = RestAssured.given().
+                header("Authorization", "Bearer " + token).
+                header("Content-Type", "application/json").
+                header("Accept", "application/json")
+                .get(USER_CONTAINER_URL + "/api/users/findByLogin/" + userLogin)
+                .then()
+                .statusCode(200)
                 .extract().path("uuid");
 
 
@@ -103,26 +124,16 @@ public class RentResourceAdapterTest {
         createRentRequest.put("startDate", "2024-12-10T13:45:00.000");
         createRentRequest.put("endDate", "2024-12-15T13:45:00.000");
 
-        System.out.println(createRentRequest.toJSONString());
-
         exampleRentUUID = RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type","application/json" ).
                 header("Accept","application/json" ).
                 body(createRentRequest.toJSONString()).when().
-                post(CONTAINER_URL +"/api/rents").
+                post(RENT_CONTAINER_URL +"/api/rents").
                 then().statusCode(200)
                 .extract().path("id");
 
     }
-    //
-    // @AfterEach
-    // public void clean() {
-    //     RestAssured.given().
-    //             header("Authorization", "Bearer " + token).
-    //             delete(CONTAINER_URL +"/api/rents" + exampleRentUUID)
-    //             .then().statusCode(200);
-    // }
 
     @Test
     public void testGetRent() {
@@ -132,7 +143,7 @@ public class RentResourceAdapterTest {
         Response response = RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 contentType(ContentType.JSON).
-                when().get(CONTAINER_URL +"/api/rents/" + exampleRentUUID);
+                when().get(RENT_CONTAINER_URL +"/api/rents/" + exampleRentUUID);
 
         assertThat(response.asString()).isEqualTo("{\"beginTime\":\"2024-12-10T13:45:00\",\"endTime\":\"2024-12-15T13:45:00\",\"id\":\""+exampleRentUUID+"\",\"login\":\"adminLogin\",\"roomId\":\""+exampleRoomUUID+"\"}");
     }
@@ -144,17 +155,17 @@ public class RentResourceAdapterTest {
         RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 contentType(ContentType.JSON)
-                .when().get(CONTAINER_URL +"/api/rents/" + exampleRentUUID)
+                .when().get(RENT_CONTAINER_URL +"/api/rents/" + exampleRentUUID)
                 .then().statusCode(200);
 
         RestAssured.given().
                 header("Authorization", "Bearer " + token).
-                delete(CONTAINER_URL + "/api/rents/" + exampleRentUUID)
+                delete(RENT_CONTAINER_URL + "/api/rents/" + exampleRentUUID)
                 .then().statusCode(200);
 
         RestAssured.given().
                 header("Authorization", "Bearer " + token).
-                when().get(CONTAINER_URL + "/api/rents/" + exampleRentUUID)
+                when().get(RENT_CONTAINER_URL + "/api/rents/" + exampleRentUUID)
                 .then().statusCode(404);
     }
 
@@ -164,7 +175,7 @@ public class RentResourceAdapterTest {
                 header("Authorization", "Bearer " + token).
                 contentType(ContentType.TEXT).
                 queryParam("startDate","2024-12-10T13:45:00").
-                when().get(CONTAINER_URL + "/api/rents/startDate")
+                when().get(RENT_CONTAINER_URL + "/api/rents/startDate")
                 .then().statusCode(200);
     }
 
@@ -174,7 +185,7 @@ public class RentResourceAdapterTest {
                 header("Authorization", "Bearer " + token).
                 contentType(ContentType.TEXT).
                 queryParam("endDate","2024-12-15T13:45:00").
-                when().get(CONTAINER_URL + "/api/rents/endDate")
+                when().get(RENT_CONTAINER_URL + "/api/rents/endDate")
                 .then().statusCode(200);
     }
 

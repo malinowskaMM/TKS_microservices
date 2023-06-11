@@ -1,6 +1,8 @@
 package p.lodz.tks.rent.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
+
+import javax.ejb.Stateless;
 import javax.ws.rs.*;
 
 import org.eclipse.microprofile.metrics.annotation.Counted;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Path("/rents")
+@Stateless
 public class RentResourceAdapter {
 
     @Inject

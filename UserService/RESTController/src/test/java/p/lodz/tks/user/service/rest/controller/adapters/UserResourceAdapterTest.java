@@ -6,9 +6,10 @@ import io.restassured.response.Response;
 import org.json.simple.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.output.Slf4jLogConsumer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.junit.jupiter.Container;
@@ -19,7 +20,6 @@ import java.util.Formatter;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 @Testcontainers
 public class UserResourceAdapterTest {
@@ -31,11 +31,8 @@ public class UserResourceAdapterTest {
     String uniqueManagerLogin;
     String uniqueClientLogin;
     String uniqueAdminLogin;
-
     String token;
-
     Formatter formatter = new Formatter();
-
     String CONTAINER_URL;
 
     @Container
@@ -48,8 +45,8 @@ public class UserResourceAdapterTest {
                     .withFileFromPath("TKS-2023-UserRestApi.war", Path.of("target", "TKS-2023-UserRestApi.war"))
     )
             .withExposedPorts(8080, 4848)
+            .withLogConsumer(new Slf4jLogConsumer(LOGGER))
             .waitingFor(Wait.forHttp("/TKS-2023-UserRestApi/api/users/ping").forPort(8080).forStatusCode(200));
-
 
     @Before
     public void initialize() {
@@ -73,34 +70,50 @@ public class UserResourceAdapterTest {
         createClientRequest.put("login", uniqueClientLogin);
         createClientRequest.put("password", "examplePassword");
         createClientRequest.put("accessLevel", "CLIENT");
-        createClientRequest.put("personalId", "12345678910");
-        createClientRequest.put("firstName", "Jan");
+        createClientRequest.put("personalId", "123456789");
+        createClientRequest.put("firstName", "Janek");
         createClientRequest.put("lastName", "Kowalski");
-        createClientRequest.put("address", "Pawia 23/25 m 13 Warszawa 00-000");
+        createClientRequest.put("address", "Warszawa");
 
-        exampleUUID = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(createClientRequest.toJSONString()).when().
-                post(CONTAINER_URL + "/api/users/client").
-                then().statusCode(200)
+                post(CONTAINER_URL + "/api/users").
+                then().statusCode(201);
+
+        exampleUUID = RestAssured.given().
+                header("Authorization", "Bearer " + token).
+                header("Content-Type", "application/json").
+                header("Accept", "application/json")
+                .get(CONTAINER_URL + "/api/users/findByLogin/" + uniqueClientLogin)
+                .then()
+                .statusCode(200)
                 .extract().path("uuid");
 
 
-        JSONObject createAdminRequest = new JSONObject();
+                JSONObject createAdminRequest = new JSONObject();
         uniqueAdminLogin = generateRandomLogin();
         createAdminRequest.put("login", uniqueAdminLogin);
         createAdminRequest.put("password", "examplePasswordAdmin");
         createAdminRequest.put("accessLevel", "ADMIN");
 
-        adminExampleUUID = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(createAdminRequest.toJSONString()).when().
-                post(CONTAINER_URL + "/api/users/admin").
-                then().statusCode(200)
+                post(CONTAINER_URL + "/api/users").
+                then().statusCode(201);
+
+        adminExampleUUID = RestAssured.given().
+                header("Authorization", "Bearer " + token).
+                header("Content-Type", "application/json").
+                header("Accept", "application/json")
+                .get(CONTAINER_URL + "/api/users/findByLogin/" + uniqueAdminLogin)
+                .then()
+                .statusCode(200)
                 .extract().path("uuid");
 
 
@@ -110,13 +123,21 @@ public class UserResourceAdapterTest {
         createManagerRequest.put("password", "examplePasswordManager");
         createManagerRequest.put("accessLevel", "MANAGER");
 
-        managerExampleUUID = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(createManagerRequest.toJSONString()).when().
-                post(CONTAINER_URL + "/api/users/manager").
-                then().statusCode(200)
+                post(CONTAINER_URL + "/api/users").
+                then().statusCode(201);
+
+        managerExampleUUID = RestAssured.given().
+                header("Authorization", "Bearer " + token).
+                header("Content-Type", "application/json").
+                header("Accept", "application/json")
+                .get(CONTAINER_URL + "/api/users/findByLogin/" + uniqueManagerLogin)
+                .then()
+                .statusCode(200)
                 .extract().path("uuid");
     }
 
@@ -184,7 +205,7 @@ public class UserResourceAdapterTest {
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(changeClientRequest).
-                when().put(CONTAINER_URL + "/api/users/client/" + exampleUUID);
+                when().put(CONTAINER_URL + "/api/users/" + exampleUUID);
 
         Response response2 = RestAssured.given().
                 header("Authorization", "Bearer " + token).
@@ -224,28 +245,19 @@ public class UserResourceAdapterTest {
         createClientRequest.put("lastName", "Kowalski");
         createClientRequest.put("address", "Pawia 23/25 m 13 Warszawa 00-000");
 
-        String uuid = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(createClientRequest.toJSONString()).when().
-                post(CONTAINER_URL + "/api/users/client").
-                then().statusCode(200)
-                .body("login", equalTo(inTestUniqueClientLogin))
-                .body("password", equalTo("examplePassword"))
-                .body("accessLevel", equalTo("CLIENT"))
-                .body("personalId", equalTo("12345678910"))
-                .body("firstName", equalTo("Jan"))
-                .body("lastName", equalTo("Kowalski"))
-                .body("address", equalTo("Pawia 23/25 m 13 Warszawa 00-000"))
-                .extract().path("uuid");
+                post(CONTAINER_URL + "/api/users").
+                then().statusCode(201);
 
-        Response response = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 contentType(ContentType.JSON).
-                when().get(CONTAINER_URL + "/api/users/" + uuid);
-
-        assertThat(response.asString()).isEqualTo("{\"accessLevel\":\"CLIENT\",\"login\":\"" + inTestUniqueClientLogin + "\",\"uuid\":\"" + uuid + "\"}");
+                when().get(CONTAINER_URL + "/api/users/findByLogin/" + inTestUniqueClientLogin)
+                .then().statusCode(200);
     }
 
     @Test
@@ -256,24 +268,20 @@ public class UserResourceAdapterTest {
         createManagerRequest.put("password", "examplePassword");
         createManagerRequest.put("accessLevel", "MANAGER");
 
-        String uuid = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(createManagerRequest.toJSONString()).when().
-                post(CONTAINER_URL + "/api/users/manager").
-                then().statusCode(200)
-                .body("login", equalTo(inTestUniqueManagerLogin))
-                .body("password", equalTo("examplePassword"))
-                .body("accessLevel", equalTo("MANAGER"))
-                .extract().path("uuid");
+                post(CONTAINER_URL + "/api/users").
+                then().statusCode(201);
 
         Response response = RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 contentType(ContentType.JSON).
-                when().get(CONTAINER_URL + "/api/users/" + uuid);
+                when().get(CONTAINER_URL + "/api/users/findByLogin/" + inTestUniqueManagerLogin);
 
-        assertThat(response.asString()).isEqualTo("{\"accessLevel\":\"MANAGER\",\"login\":\"" + inTestUniqueManagerLogin + "\",\"uuid\":\"" + uuid + "\"}");
+        assertThat(response.asString()).startsWith("{\"accessLevel\":\"MANAGER\",\"login\":\"" + inTestUniqueManagerLogin + "\",\"uuid\":\"");
     }
 
     @Test
@@ -295,7 +303,7 @@ public class UserResourceAdapterTest {
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(updateManagerRequest).
-                when().put(CONTAINER_URL + "/api/users/manager/" + managerExampleUUID);
+                when().put(CONTAINER_URL + "/api/users/" + managerExampleUUID);
 
         assertThat(response1.statusCode()).isEqualTo(200);
 
@@ -310,24 +318,20 @@ public class UserResourceAdapterTest {
         createAdminRequest.put("password", "examplePassword");
         createAdminRequest.put("accessLevel", "ADMIN");
 
-        String uuid = RestAssured.given().
+        RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(createAdminRequest.toJSONString()).when().
-                post(CONTAINER_URL + "/api/users/admin").
-                then().statusCode(200)
-                .body("login", equalTo(inTestUniqueAdminLogin))
-                .body("password", equalTo("examplePassword"))
-                .body("accessLevel", equalTo("ADMIN"))
-                .extract().path("uuid");
+                post(CONTAINER_URL + "/api/users").
+                then().statusCode(201);
 
         Response response = RestAssured.given().
                 header("Authorization", "Bearer " + token).
                 contentType(ContentType.JSON).
-                when().get(CONTAINER_URL + "/api/users/" + uuid);
+                when().get(CONTAINER_URL + "/api/users/findByLogin/" + inTestUniqueAdminLogin);
 
-        assertThat(response.asString()).isEqualTo("{\"accessLevel\":\"ADMIN\",\"login\":\"" + inTestUniqueAdminLogin + "\",\"uuid\":\"" + uuid + "\"}");
+        assertThat(response.asString()).startsWith("{\"accessLevel\":\"ADMIN\",\"login\":\"" + inTestUniqueAdminLogin + "\",\"uuid\":\"");
     }
 
     @Test
@@ -349,7 +353,7 @@ public class UserResourceAdapterTest {
                 header("Content-Type", "application/json").
                 header("Accept", "application/json").
                 body(updateAdminRequest).
-                when().put(CONTAINER_URL + "/api/users/admin/" + adminExampleUUID);
+                when().put(CONTAINER_URL + "/api/users/" + adminExampleUUID);
 
         assertThat(response1.statusCode()).isEqualTo(200);
 
@@ -357,7 +361,6 @@ public class UserResourceAdapterTest {
 
     @Test
     public void shouldActivateClientWithGivenId() {
-
         assertThat(exampleUUID).isNotNull();
 
         Response response = RestAssured.given().

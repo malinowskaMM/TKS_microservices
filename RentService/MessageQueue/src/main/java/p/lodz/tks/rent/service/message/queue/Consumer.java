@@ -3,8 +3,6 @@ package p.lodz.tks.rent.service.message.queue;
 import com.nimbusds.jose.JOSEException;
 import com.rabbitmq.client.*;
 import lombok.extern.java.Log;
-import org.json.simple.JSONObject;
-import p.lodz.tks.rent.service.application.core.application.services.services.auth.JwsGenerator;
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.AccessLevel;
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.User;
 import p.lodz.tks.rent.service.application.core.domain.model.model.user.admin.Admin;
@@ -21,7 +19,6 @@ import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.xml.rpc.ServiceException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
@@ -38,15 +35,15 @@ public class Consumer {
     @Inject
     Publisher publisher;
 
-    private static final String HOST_NAME = "localhost";
-    private static final int PORT_NUMBER = 5672;
-    private static final String USERNAME = "guest";
-    private static final String PASSWORD = "guest";
-    private static final String EXCHANGE_NAME = "users_exchange";
-    private static final String EXCHANGE_TYPE = "topic";
-    private static final String CREATE_USER_KEY = "user.create";
-    private static final String UPDATE_ROUTING_KEY = "user.update";
-    private static final String DELETE_USER_KEY = "user.delete";
+    private static final String HOST_NAME = RabbitMQConfig.HOST_NAME;
+    private static final int PORT_NUMBER = RabbitMQConfig.PORT_NUMBER;
+    private static final String USERNAME = RabbitMQConfig.USERNAME;
+    private static final String PASSWORD = RabbitMQConfig.PASSWORD;
+    private static final String EXCHANGE_NAME = RabbitMQConfig.EXCHANGE_NAME;
+    private static final String EXCHANGE_TYPE = RabbitMQConfig.EXCHANGE_TYPE;
+    private static final String CREATE_USER_KEY = RabbitMQConfig.CREATE_USER_KEY;
+    private static final String UPDATE_USER_KEY = RabbitMQConfig.UPDATE_USER_KEY;
+    private static final String DELETE_USER_KEY = RabbitMQConfig.DELETE_USER_KEY;
 
     private Channel channel;
     private String queueName;
@@ -74,7 +71,7 @@ public class Consumer {
 
     private void bindQueueWithChannel() throws IOException {
         channel.queueBind(queueName, EXCHANGE_NAME, CREATE_USER_KEY);
-        channel.queueBind(queueName, EXCHANGE_NAME, UPDATE_ROUTING_KEY);
+        channel.queueBind(queueName, EXCHANGE_NAME, UPDATE_USER_KEY);
         channel.queueBind(queueName, EXCHANGE_NAME, DELETE_USER_KEY);
     }
 
@@ -99,7 +96,7 @@ public class Consumer {
                 }
                 break;
             }
-            case UPDATE_ROUTING_KEY: {
+            case UPDATE_USER_KEY: {
                 try {
                     updateUser(new String(delivery.getBody(), StandardCharsets.UTF_8));
                 } catch (Exception e) {

@@ -1,7 +1,9 @@
 package p.lodz.tks.user.service.rest.controller.adapters;
 
 import com.nimbusds.jose.JOSEException;
+import org.eclipse.microprofile.metrics.Counter;
 import org.eclipse.microprofile.metrics.annotation.Counted;
+import org.eclipse.microprofile.metrics.annotation.Metric;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.json.JSONObject;
 import p.lodz.tks.user.service.application.core.application.services.auth.JwsGenerator;
@@ -16,6 +18,7 @@ import p.lodz.tks.user.service.rest.controller.mappers.UserDtoMapper;
 import p.lodz.tks.user.service.user.UserUseCase;
 
 import javax.annotation.security.RolesAllowed;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -29,6 +32,7 @@ import java.text.ParseException;
 import java.util.UUID;
 
 @Path("/users")
+@Stateless
 public class UserResourceAdapter {
 
     @Inject
@@ -39,6 +43,10 @@ public class UserResourceAdapter {
 
     @Inject
     JwsGenerator jwsGenerator;
+
+    // @Inject
+    // @Metric(name = "controller_counter")
+    // private Counter counter;
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
@@ -114,7 +122,8 @@ public class UserResourceAdapter {
             description = "Time to create user")
     @Counted(name = "createUserInvocations",
             absolute = true,
-            description = "Number of invocations")
+            description = "Number of invocations",
+            tags = {"method=user"})
     public Response createUser(@Valid UserDto userDto) throws ManagerValidationFailed, IOException {
         if (userDto.getAccessLevel().equals("CLIENT")) {
             publisher.createUser(Publisher.Serialization
