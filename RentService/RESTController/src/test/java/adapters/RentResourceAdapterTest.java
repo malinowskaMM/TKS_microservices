@@ -26,7 +26,8 @@ public class RentResourceAdapterTest {
     String userLogin;
     String token;
 
-    Formatter formatter = new Formatter();
+    Formatter formatter1 = new Formatter();
+    Formatter formatter2 = new Formatter();
 
     String RENT_CONTAINER_URL;
     String USER_CONTAINER_URL;
@@ -59,8 +60,8 @@ public class RentResourceAdapterTest {
     public void initialize() {
         restService.start();
         userService.start();
-        RENT_CONTAINER_URL = formatter.format("http://localhost:%d/TKS-2023-RentRestApi", restService.getMappedPort(8080)).toString();
-        USER_CONTAINER_URL = formatter.format("http://localhost:%d/TKS-2023-UserRestApi", userService.getMappedPort(8080)).toString();
+        RENT_CONTAINER_URL = formatter1.format("http://localhost:%d/TKS-2023-RentRestApi", restService.getMappedPort(8080)).toString();
+        USER_CONTAINER_URL = formatter2.format("http://localhost:%d/TKS-2023-UserRestApi", userService.getMappedPort(8080)).toString();
         RestAssured.reset();
 
         JSONObject authDto = new JSONObject();
